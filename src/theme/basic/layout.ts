@@ -1,0 +1,45 @@
+const LAYOUT_MAX_CONTAINER_WIDTH = 1920;
+const LAYOUT_GRID_COLUMNS = 12;
+
+const LAYOUT_BREAKPOINTS = {
+  XXS: 0,
+  XS: 375,
+  SM: 768,
+  MD: 1024,
+  LG: 1440,
+};
+
+const LAYOUT_GRID_GAP = {
+  XXS: 16,
+  XS: 16,
+  SM: 24,
+  MD: 32,
+  LG: 40,
+};
+
+const LAYOUT_GRID_OFFSET = {
+  XXS: 16,
+  XS: 16,
+  SM: 40,
+  MD: 56,
+  LG: 80,
+};
+
+const LAYOUT_EXTRA_WIDTH = {
+  XXS: 0,
+  XS: 0,
+  SM: 24,
+  MD: 40,
+  LG: 40,
+};
+
+const LAYOUT = {
+  LAYOUT_MAX_CONTAINER_WIDTH,
+  LAYOUT_GRID_COLUMNS,
+  LAYOUT_BREAKPOINTS,
+  LAYOUT_GRID_GAP,
+  LAYOUT_GRID_OFFSET,
+  LAYOUT_EXTRA_WIDTH,
+};
+
+export default LAYOUT;

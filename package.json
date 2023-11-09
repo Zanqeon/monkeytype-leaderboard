@@ -1,6 +1,7 @@
 {
   "name": "monkeytype-leaderboard",
   "version": "0.1.0",
+  "author": "Tim Huijg <tim_huijg@hotmail.com>",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,16 +10,19 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@totemblock/layout": "^1.4.0",
+    "next": "14.0.1",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.0.1"
+    "styled-components": "^6.1.1"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
-    "eslint-config-next": "14.0.1"
+    "eslint-config-next": "14.0.1",
+    "prettier": "^3.0.3",
+    "typescript": "^5"
   }
 }
