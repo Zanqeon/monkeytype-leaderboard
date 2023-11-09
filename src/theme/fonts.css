@@ -1,4 +1,11 @@
+@import url('https://use.typekit.net/cjt3fmq.css');
+
 @font-face {
   font-family: 'Stratos';
-  src: url('https://use.typekit.net/cjt3fmq.css');
+  src: local('Verdana');
+}
+
+@font-face {
+  font-family: 'Stratos-Lights';
+  src: local('Verdana');
 }

@@ -38,9 +38,9 @@ const HEADING_3 = css`
 `;
 
 const BODY_REGULAR = css`
-  font-family: '${FONT.FONT_PRIMARY}';
+  font-family: '${FONT.FONT_SECONDARY}';
   font-size: 1.4rem;
-  font-weight: 300;
+  font-weight: 400;
   line-height: 120%;
   letter-spacing: normal;
   color: ${COLOR.white};
@@ -56,7 +56,7 @@ const BODY_REGULAR_SEMIBOLD = css`
 `;
 
 const BODY_LARGE = css`
-  font-family: '${FONT.FONT_PRIMARY}';
+  font-family: '${FONT.FONT_SECONDARY}';
   font-size: 1.6rem;
   font-weight: 200;
   line-height: 120%;
@@ -104,7 +104,7 @@ const BODY_NUMBER = css`
 `;
 
 const LABEL = css`
-  font-family: '${FONT.FONT_PRIMARY}';
+  font-family: '${FONT.FONT_SECONDARY}';
   font-size: 1.2rem;
   font-weight: 400;
   line-height: 120%;

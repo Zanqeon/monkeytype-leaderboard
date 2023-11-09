@@ -20,10 +20,7 @@ export default function Home() {
       </Head>
       <main style={{ background: COLOR.black, flex: 1 }}>
         <PageHeader {...content.pageHeader} />
-        <Container>
-          <List {...content.monkeyTypeDate}
-          />
-        </Container>
+        <List {...content.monkeyTypeDate} />
         <QRCode {...content.QRCode} />
       </main>
     </>

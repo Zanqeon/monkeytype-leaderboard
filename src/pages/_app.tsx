@@ -1,6 +1,7 @@
 import type { AppProps } from 'next/app';
 import styled, { ThemeProvider } from 'styled-components';
 import { GlobalStyle, THEME } from '../theme';
+import '../theme/fonts.css';
 
 const AppContainer = styled.div`
   display: flex;
