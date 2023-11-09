@@ -9,11 +9,13 @@ export const StyledContainer = styled(Container)(
     flex-direction: column;
     align-items: center;
     margin-top: ${SPACING['06']};
+    margin-bottom: ${SPACING['06']};
 
     ${media(
       'MD',
       css`
         margin-top: ${SPACING['07']};
+        margin-bottom: 0;
       `
     )}
   `
@@ -28,9 +30,10 @@ export const StyledImageWrapper = styled.div`
 export const StyledContentWrapper = styled.div(
   ({ theme: { LAYOUT, SPACING } }) => css`
     position: relative;
+    text-align: center;
 
     ${media(
-      'LG',
+      'MD',
       css`
         position: absolute;
         right: calc(
@@ -47,7 +50,7 @@ export const StyledLink = styled(Link)(
     ${TYPOGRAPHY.BODY_REGULAR}
 
     ${media(
-      'LG',
+      'MD',
       css`
         display: flex;
         justify-content: flex-end;

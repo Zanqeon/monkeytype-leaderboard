@@ -42,7 +42,7 @@ const ListItem = ({
       >
         <StyledPlace>{place}</StyledPlace>
       </StyledPlaceWrapper>
-      <StyledContentWrapper $hasLabel={place === 1 || place == 6}>
+      <StyledContentWrapper $hasLabelDesktop={place === 1 || place == 6} $hasLabelMobile={place === 1}>
         <StyledNameWrapper>
           <StyledName>{name}</StyledName>
         </StyledNameWrapper>

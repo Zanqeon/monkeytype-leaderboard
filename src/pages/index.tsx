@@ -4,7 +4,6 @@ import PageHeader from '@app/components/page-header';
 import content from '@app/content';
 import QRCode from '@app/components/qr-code';
 import List from '@app/components/list';
-import { Container } from '@totemblock/layout';
 
 export default function Home() {
   return (

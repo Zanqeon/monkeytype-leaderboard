@@ -17,6 +17,7 @@ export const StyledPlaceWrapper = styled.div<{ $backgroundColor: string }>(
   ({ $backgroundColor, theme: { SPACING, COLOR } }) => css`
     position: relative;
     transform: skew(-30deg);
+    transform-origin: bottom left;
     border: 0.2rem solid ${COLOR.white};
     padding: ${SPACING['02']} 2.4rem;
     background: ${$backgroundColor || 'none'};
@@ -24,7 +25,7 @@ export const StyledPlaceWrapper = styled.div<{ $backgroundColor: string }>(
     ${media(
       'MD',
       css`
-        width: 9rem;
+        width: 10rem;
         padding: ${SPACING['02']} 3.6rem;
       `
     )}
@@ -40,25 +41,33 @@ export const StyledPlace = styled.div(
     display: flex;
     justify-content: center;
     user-select: none;
+    width: 3.2rem;
+    left: 1.2rem;
 
     ${media(
       'MD',
       css`
-        width: 2.6rem;
+        left: 2.8rem;
       `
     )}
   `
 );
 
-export const StyledContentWrapper = styled.div<{ $hasLabel?: boolean }>(
-  ({ $hasLabel, theme: { COLOR, SPACING, TYPOGRAPHY } }) => css`
+export const StyledContentWrapper = styled.div<{
+  $hasLabelMobile?: boolean;
+  $hasLabelDesktop?: boolean;
+}>(
+  ({
+    $hasLabelMobile,
+    $hasLabelDesktop,
+    theme: { COLOR, SPACING, TYPOGRAPHY },
+  }) => css`
     border: 0.2rem solid ${COLOR.white};
     display: flex;
     align-items: center;
-    padding: ${SPACING['03']} ${SPACING['04']};
+    padding: ${SPACING['03']} ${SPACING['03']};
     z-index: 1;
     background-color: ${COLOR.black};
-    margin-left: -2.4rem;
     flex: 1;
     justify-content: space-between;
 
@@ -67,56 +76,83 @@ export const StyledContentWrapper = styled.div<{ $hasLabel?: boolean }>(
       css`
         padding: ${SPACING['04']} ${SPACING['05']};
         justify-content: inherit;
+        margin-left: -2.4rem;
       `
     )}
 
-    ${$hasLabel &&
+    ${$hasLabelDesktop &&
     css`
-      ${StyledNameWrapper} {
+      ${StyledNameWrapper},
+      ${StyledWordsPerMinute},
+      ${StyledAccuracy},
+      ${StyledDate} {
         position: relative;
+        height: 100%;
 
         &::after {
-          content: 'Name';
-          position: absolute;
-          top: ${`-${SPACING['06']}`};
-          left: 0;
+          display: none;
           ${TYPOGRAPHY.LABEL}
+          top: -4rem;
+          position: absolute;
         }
+
+        ${media(
+          'MD',
+          css`
+            &::after {
+              top: -4.5rem;
+              display: block;
+            }
+          `
+        )}
+      }
+
+      ${StyledNameWrapper} {
+        &::after {
+          content: 'Name';
+          left: 0;
+          top: -3.8rem; //0.2 rem smaller than 'top' of the other labels
+        }
+        ${media(
+          'MD',
+          css`
+            &::after {
+              top: -4.3rem; //0.2 rem smaller than 'top' of the other labels
+            }
+          `
+        )}
       }
 
       ${StyledWordsPerMinute} {
-        position: relative;
-
         &::after {
           content: 'WPM';
-          position: absolute;
-          top: ${`-${SPACING['06']}`};
           right: 0;
-          ${TYPOGRAPHY.LABEL}
         }
       }
 
       ${StyledAccuracy} {
-        position: relative;
-
         &::after {
           content: 'Accuracy';
-          position: absolute;
-          top: ${`-${SPACING['06']}`};
           right: 0;
-          ${TYPOGRAPHY.LABEL}
         }
       }
 
       ${StyledDate} {
-        position: relative;
-
         &::after {
           content: 'Date';
-          position: absolute;
-          top: ${`-${SPACING['06']}`};
           right: 0;
-          ${TYPOGRAPHY.LABEL}
+        }
+      }
+    `}
+    
+    ${$hasLabelMobile &&
+    css`
+      ${StyledNameWrapper},
+      ${StyledWordsPerMinute},
+      ${StyledAccuracy},
+      ${StyledDate} {
+        &::after {
+          display: block;
         }
       }
     `}
@@ -132,7 +168,7 @@ export const StyledNameWrapper = styled.div(
     ${media(
       'MD',
       css`
-        max-width: auto;
+        max-width: 12rem;
       `
     )}
 
@@ -158,14 +194,12 @@ export const StyledWordsPerMinute = styled.div(
   ({ theme: { TYPOGRAPHY, SPACING } }) => css`
     ${TYPOGRAPHY.BODY_LARGE_SEMIBOLD}
     width: 3rem;
-    margin-left: ${SPACING['04']};
     text-align: end;
     margin-bottom: ${`-${SPACING['01']}`}; // negative margin to pull the text down to the baseline of the LARGE_SEMIBOLD typography
 
     ${media(
       'LG',
       css`
-        margin-left: 0;
         width: 6rem;
       `
     )}
@@ -175,15 +209,13 @@ export const StyledWordsPerMinute = styled.div(
 export const StyledAccuracy = styled.div(
   ({ theme: { TYPOGRAPHY, SPACING } }) => css`
     ${TYPOGRAPHY.BODY_LARGE}
-    width: 4.6rem;
-    margin-left: ${SPACING['03']};
+    width: 6.4rem;
     text-align: end;
     margin-bottom: ${`-${SPACING['01']}`}; // negative margin to pull the text down to the baseline of the LARGE_SEMIBOLD typography
 
     ${media(
       'MD',
       css`
-        margin-left: 0;
         width: 8rem;
       `
     )}
@@ -200,15 +232,13 @@ export const StyledAccuracy = styled.div(
 export const StyledDate = styled.div(
   ({ theme: { TYPOGRAPHY, SPACING } }) => css`
     ${TYPOGRAPHY.BODY_LARGE}
-    width: 3rem;
-    margin-left: ${SPACING['03']};
+    width: 5rem;
     text-align: end;
     margin-bottom: ${`-${SPACING['01']}`}; // negative margin to pull the text down to the baseline of the LARGE_SEMIBOLD typography
 
     ${media(
       'MD',
       css`
-        margin-left: 0;
         width: 7rem;
       `
     )}
