@@ -90,7 +90,7 @@ const BODY_LARGE_SEMIBOLD = css`
   )}
 `;
 
-const BODY_NUMBER = css`
+const NUMBER = css`
   font-family: '${FONT.FONT_PRIMARY}';
   font-size: 3rem;
   font-weight: 500;
@@ -103,6 +103,41 @@ const BODY_NUMBER = css`
     css`
       font-size: 4.6rem;
       line-height: 5.6rem;
+    `
+  )}
+`;
+
+const NUMBER_SMALL = css`
+  font-family: '${FONT.FONT_PRIMARY}';
+  font-size: 2.4rem;
+  font-weight: 500;
+  line-height: 2.8rem;
+  letter-spacing: -3px;
+  color: ${COLOR.white};
+
+  ${media(
+    'MD',
+    css`
+      letter-spacing: -4px;
+      font-size: 2.8rem;
+      line-height: 3.4rem;
+    `
+  )}
+`;
+
+const NUMBER_SMALL_LIGHT = css`
+  font-family: '${FONT.FONT_SECONDARY}';
+  font-size: 2.4rem;
+  font-weight: 200;
+  line-height: 2.8rem;
+  letter-spacing: -1px;
+  color: ${COLOR.white};
+
+  ${media(
+    'MD',
+    css`
+      font-size: 2.8rem;
+      line-height: 3.4rem;
     `
   )}
 `;
@@ -132,7 +167,9 @@ const TYPOGRAPHY = {
   BODY_LARGE_SEMIBOLD,
   BODY_REGULAR,
   BODY_REGULAR_SEMIBOLD,
-  BODY_NUMBER,
+  NUMBER,
+  NUMBER_SMALL,
+  NUMBER_SMALL_LIGHT,
   LABEL,
 };
 

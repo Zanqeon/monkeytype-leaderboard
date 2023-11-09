@@ -1,27 +1,26 @@
 import styled, { css } from 'styled-components';
 import media from '@app/utils/media';
 
+export const StyledTitle = styled.div(
+  ({ theme: { TYPOGRAPHY } }) => css`
+    text-align: center;
+    ${TYPOGRAPHY.HEADING_2}
+  `
+);
+
 export const StyledList = styled.ul(
   ({ theme: { SPACING } }) => css`
-    margin-top: ${SPACING['06']};
     display: flex;
     flex-direction: column;
-    align-content: space-around;
     flex-wrap: wrap;
-    gap: ${SPACING['02']};
 
     ${media(
       'MD',
       css`
-        margin-top: 6rem;
-        max-height: 36rem;
-      `
-    )}
-
-    ${media(
-      'LG',
-      css`
-        margin-top: ${SPACING['07']};
+        margin-top: ${SPACING['06']};
+        flex-direction: row;
+        gap: ${SPACING['05']};
+        justify-content: center;
       `
     )}
   `

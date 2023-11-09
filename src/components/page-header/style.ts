@@ -11,7 +11,7 @@ export const StyledContainer = styled(Container)(
     ${media(
       'MD',
       css`
-        margin-top: ${SPACING['07']};
+        margin-top: ${SPACING['06']};
       `
     )}
   `

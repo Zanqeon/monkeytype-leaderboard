@@ -34,7 +34,7 @@ export const StyledPlaceWrapper = styled.div<{ $backgroundColor: string }>(
 
 export const StyledPlace = styled.div(
   ({ theme: { TYPOGRAPHY } }) => css`
-    ${TYPOGRAPHY.BODY_NUMBER}
+    ${TYPOGRAPHY.NUMBER}
     position: absolute;
     top: 50%;
     transform: skew(30deg) translateY(-50%);

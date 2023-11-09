@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components';
 import media from '@app/utils/media';
 import { Container } from '@totemblock/layout';
-import Link from 'next/link';
 
 export const StyledContainer = styled(Container)(
   ({ theme: { SPACING } }) => css`
@@ -15,41 +14,42 @@ export const StyledContainer = styled(Container)(
     ${media(
       'MD',
       css`
-        margin: 0;
+        margin-top: 0;
+        margin-bottom: 0;
       `
     )}
   `
 );
 
-export const StyledImageWrapper = styled.div`
+export const StyledContentWrapper = styled.div`
   position: relative;
-  width: 18rem;
-  height: 18rem;
+  width: 100%;
 `;
 
-export const StyledContentWrapper = styled.div`
+export const StyledWrapper = styled.div`
   ${media(
     'MD',
     css`
       margin: 0;
       position: absolute;
-      right: -1.2rem;
-      bottom: -1.2rem;
+      left: 0;
+      bottom: 0;
     `
   )}
 `;
 
-export const StyledLink = styled(Link)(
-  ({ theme: { TYPOGRAPHY, SPACING } }) => css`
-    ${TYPOGRAPHY.BODY_REGULAR}
+export const StyledTitle = styled.div(
+  ({ theme: { TYPOGRAPHY } }) => css`
+    ${TYPOGRAPHY.HEADING_2}
+  `
+);
 
-    ${media(
-      'MD',
-      css`
-        display: flex;
-        justify-content: flex-end;
-        margin-right: ${SPACING['03']}; // padding of the QR code image
-      `
-    )}
+export const StyledTime = styled.div(
+  ({ theme: { TYPOGRAPHY, SPACING } }) => css`
+    ${TYPOGRAPHY.BODY_LARGE}
+
+    margin-top: ${SPACING['01']};
+    display: flex;
+    flex-direction: column;
   `
 );
