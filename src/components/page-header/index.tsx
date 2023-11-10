@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import {
   StyledContainer,
   StyledCurrentChallengeDesktop,
@@ -9,6 +8,7 @@ import {
   StyledNextChallengeTitle,
   StyledNextChallengeDescription,
   StyledImageWrapper,
+  StyledImage,
 } from './style';
 
 export interface IPageHeaderProps {
@@ -26,13 +26,7 @@ const PageHeader = ({ currentChallenge, nextChallenge }: IPageHeaderProps) => (
   <>
     <StyledContainer>
       <StyledImageWrapper>
-        <Image
-          src="/logo.svg"
-          alt="Logo"
-          sizes="(min-width: 0px) 160px"
-          priority
-          fill
-        />
+        <StyledImage src="/logo.svg" alt="Logo" />
       </StyledImageWrapper>
       <StyledCurrentChallengeDesktop>
         <StyledCurrentChallengeDescription>

@@ -149,3 +149,23 @@ export const StyledAccuracy = styled.div(
     margin-bottom: -0.3rem;
   `
 );
+
+export const StyledImageContainer = styled.div`
+  position: relative;
+`;
+
+export const StyledEmoji = styled.div`
+  font-size: 2rem;
+  transform: rotate(35deg);
+  position: absolute;
+  left: 4.4rem;
+  top: 0.4rem;
+
+  ${media(
+    'MD',
+    css`
+      left: 4.2rem;
+      top: 0.2rem;
+    `
+  )};
+`;

@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { Container } from '@totemblock/layout';
 import {
   StyledWrapper,
+  StyledImageContainer,
   StyledImageWrapper,
   StyledName,
   StyledHeader,
@@ -13,6 +14,7 @@ import {
   StyledWordsPerMinute,
   StyledAccuracy,
   StyledResult,
+  StyledEmoji,
 } from './style';
 
 export interface IPreviousWinnerProps {
@@ -40,15 +42,12 @@ const PreviousWinner = ({
         <StyledCard>
           <StyledHeader>
             {image && (
-              <StyledImageWrapper>
-                <Image
-                  src={image}
-                  alt="avatar"
-                  sizes="(min-width: 0px) 80px"
-                  fill
-                  objectFit="cover"
-                />
-              </StyledImageWrapper>
+              <StyledImageContainer>
+                <StyledImageWrapper>
+                  <Image src={image} alt="avatar" height={48} width={48} />
+                </StyledImageWrapper>
+                <StyledEmoji>👑</StyledEmoji>
+              </StyledImageContainer>
             )}
           </StyledHeader>
           <StyledContentContainer>

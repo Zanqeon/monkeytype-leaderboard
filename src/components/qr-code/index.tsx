@@ -4,6 +4,7 @@ import {
   StyledImageWrapper,
   StyledLink,
   StyledContentWrapper,
+  StyledWrapper,
 } from './style';
 
 export interface IQRCodeProps {
@@ -14,16 +15,20 @@ export interface IQRCodeProps {
 const QRCode = ({ linkHref, linkLabel }: IQRCodeProps) => (
   <StyledContainer>
     <StyledContentWrapper>
-      <StyledImageWrapper>
-        <Image
-          src="/qr-monkeytype.svg"
-          alt="Logo"
-          sizes="(min-width: 0px) 180px"
-          priority
-          fill
-        />
-      </StyledImageWrapper>
-      <StyledLink href={linkHref}>{linkLabel}</StyledLink>
+      <StyledWrapper>
+        <StyledImageWrapper>
+          <Image
+            src="/qr-monkeytype.svg"
+            alt="Logo"
+            // sizes="(min-width: 0px) 180px"
+            height={180}
+            width={180}
+            // priority
+            // fill
+          />
+        </StyledImageWrapper>
+        <StyledLink href={linkHref}>{linkLabel}</StyledLink>
+      </StyledWrapper>
     </StyledContentWrapper>
   </StyledContainer>
 );

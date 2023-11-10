@@ -1,4 +1,12 @@
 export default {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
+  },
   compiler: {
     styledComponents: {
       ssr: true,

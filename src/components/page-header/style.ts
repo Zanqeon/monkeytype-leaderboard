@@ -83,11 +83,19 @@ export const StyledNextChallengeDescription = styled.div(
 export const StyledImageWrapper = styled.div`
   position: relative;
   width: 10rem;
+  overflow: hidden;
 
   ${media(
     'MD',
     css`
       width: 16rem;
+      height: 10rem;
     `
   )}
+`;
+
+export const StyledImage = styled.img`
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 `;

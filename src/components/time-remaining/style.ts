@@ -23,7 +23,15 @@ export const StyledContainer = styled(Container)(
 
 export const StyledContentWrapper = styled.div`
   position: relative;
+  text-align: center;
   width: 100%;
+
+  ${media(
+    'MD',
+    css`
+      text-align: start;
+    `
+  )}
 `;
 
 export const StyledWrapper = styled.div`

@@ -28,13 +28,15 @@ export const StyledImageWrapper = styled.div`
 `;
 
 export const StyledContentWrapper = styled.div`
+  text-align: center;
+
   ${media(
     'MD',
     css`
       margin: 0;
       position: absolute;
-      right: -1.2rem;
-      bottom: -1.2rem;
+      right: 0;
+      bottom: 0;
     `
   )}
 `;
@@ -51,5 +53,17 @@ export const StyledLink = styled(Link)(
         margin-right: ${SPACING['03']}; // padding of the QR code image
       `
     )}
+  `
+);
+
+export const StyledWrapper = styled.li(
+  ({ theme: { SPACING } }) => css`
+    ${media(
+      'MD',
+      css`
+        margin-right: ${SPACING['07']};
+        margin-bottom: -1.2rem;
+      `
+    )};
   `
 );
