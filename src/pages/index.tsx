@@ -6,15 +6,26 @@ import QRCode from '@app/components/qr-code';
 import List from '@app/components/list';
 import PreviousWinner from '@app/components/previous-winner';
 import TimeRemaining from '@app/components/time-remaining';
+import { GetServerSideProps } from 'next';
+import {
+  fetchFirebaseData,
+  getPreviousWinner,
+  updateUsers,
+} from '@app/services/firebase/api';
+import { PreviousWinnerType } from '@app/types/firebase';
 
-export default function Home() {
+export interface HomeProps {
+  previousWinner: PreviousWinnerType;
+}
+
+export default function Home({ previousWinner }: HomeProps) {
   return (
     <>
       <Head>
         <title>MonkeyType Touchtribe</title>
         <meta
           name="description"
-          content="A MonkeyType leaderboard for the company Touchtribe "
+          content="A MonkeyType leaderboard for Touchtribe "
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
@@ -25,8 +36,8 @@ export default function Home() {
         <PreviousWinner
           title="Winner October"
           description="100 words"
-          name="Arthur Stewart"
-          image="https://images.pexels.com/photos/3211476/pexels-photo-3211476.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+          name={previousWinner.nickname || previousWinner.name}
+          image={previousWinner.image}
           wpm={114}
           accuracy="98%"
         />
@@ -36,3 +47,18 @@ export default function Home() {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const fireBaseData = await fetchFirebaseData();
+  await updateUsers();
+
+  // TODO: fetch previous winner
+  const previousWinner = await getPreviousWinner();
+
+  return {
+    props: {
+      users: fireBaseData,
+      previousWinner: previousWinner,
+    },
+  };
+};

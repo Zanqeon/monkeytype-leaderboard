@@ -20,11 +20,9 @@ const QRCode = ({ linkHref, linkLabel }: IQRCodeProps) => (
           <Image
             src="/qr-monkeytype.svg"
             alt="Logo"
-            // sizes="(min-width: 0px) 180px"
             height={180}
             width={180}
-            // priority
-            // fill
+            priority
           />
         </StyledImageWrapper>
         <StyledLink href={linkHref}>{linkLabel}</StyledLink>

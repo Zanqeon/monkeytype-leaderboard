@@ -79,3 +79,26 @@ export default {
     ],
   },
 };
+
+export const REGISTERED_USERS = [
+  {
+    id: '0000001',
+    nickname: 'Tim Huijg',
+    apiKey: process.env.API_KEY_1,
+  },
+  {
+    id: '0000002',
+    nickname: 'Farhat',
+    apiKey: process.env.API_KEY_2,
+  },
+  {
+    id: '0000003',
+    nickname: 'Robbert',
+    apiKey: process.env.API_KEY_3,
+  },
+  {
+    id: '0000007',
+    nickname: 'Daan',
+    apiKey: process.env.API_KEY_4,
+  },
+];
