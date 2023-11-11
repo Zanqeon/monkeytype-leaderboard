@@ -1,6 +1,7 @@
 import type { AppProps } from 'next/app';
 import styled, { ThemeProvider } from 'styled-components';
-import { GlobalStyle, THEME } from '../theme';
+import { GlobalStyle, THEME } from '@app/theme';
+import { Analytics } from '@vercel/analytics/react';
 import '../theme/fonts.css';
 
 const AppContainer = styled.div`
@@ -20,6 +21,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <GlobalStyle />
       <ThemeProvider theme={THEME}>
         <Component {...pageProps} />
+        <Analytics />
       </ThemeProvider>
     </AppContainer>
   );
