@@ -50,7 +50,7 @@ export const StyledLink = styled(Link)(
       css`
         display: flex;
         justify-content: flex-end;
-        margin-right: ${SPACING['03']}; // padding of the QR code image
+        margin-top: ${SPACING['02']};
       `
     )}
   `
@@ -62,7 +62,7 @@ export const StyledWrapper = styled.li(
       'MD',
       css`
         margin-right: ${SPACING['07']};
-        margin-bottom: -1.2rem;
+        margin-bottom: -2.4rem;
       `
     )};
   `

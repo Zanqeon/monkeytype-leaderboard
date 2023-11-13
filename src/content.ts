@@ -1,3 +1,6 @@
+import QRCodeImage from 'public/qr-monkeytype.svg';
+// import QRCodeImageAccount from 'public/qr-monkeytype-account.svg';
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   pageHeader: {
@@ -13,6 +16,7 @@ export default {
   QRCode: {
     linkLabel: 'monkeytype.com',
     linkHref: 'https://www.monkeytype.com',
+    image: QRCodeImage,
   },
   monkeyTypeDate: {
     items: [

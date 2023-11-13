@@ -10,20 +10,15 @@ import {
 export interface IQRCodeProps {
   linkHref: string;
   linkLabel: string;
+  image: string;
 }
 
-const QRCode = ({ linkHref, linkLabel }: IQRCodeProps) => (
+const QRCode = ({ linkHref, linkLabel, image }: IQRCodeProps) => (
   <StyledContainer>
     <StyledContentWrapper>
       <StyledWrapper>
         <StyledImageWrapper>
-          <Image
-            src="/qr-monkeytype.svg"
-            alt="Logo"
-            height={180}
-            width={180}
-            priority
-          />
+          <Image src={image} alt="QR Code" height={180} width={180} priority />
         </StyledImageWrapper>
         <StyledLink href={linkHref}>{linkLabel}</StyledLink>
       </StyledWrapper>
