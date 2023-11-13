@@ -65,7 +65,7 @@ export default async function handler(
           ].timestamp;
 
         const formattedRecordDate = recordTimestamp
-          ? new Date(recordTimestamp).toLocaleDateString(undefined, {
+          ? new Date(recordTimestamp).toLocaleDateString('en-GB', {
               month: '2-digit',
               day: '2-digit',
             })

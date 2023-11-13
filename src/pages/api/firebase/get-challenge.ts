@@ -20,7 +20,7 @@ export default async function handler(
     })) as ChallengeData[];
 
     const getFullMonthName = (date: Date) =>
-      date.toLocaleDateString(undefined, {
+      date.toLocaleDateString('en-GB', {
         month: 'long',
       });
 
@@ -39,7 +39,7 @@ export default async function handler(
     const nextRecordMonth = currentMonth === 12 ? 1 : currentMonth + 1;
 
     const getFormattedRecordDate = (timestamp: number) =>
-      new Date(timestamp).toLocaleDateString(undefined, {
+      new Date(timestamp).toLocaleDateString('en-GB', {
         month: '2-digit',
         day: '2-digit',
       });
