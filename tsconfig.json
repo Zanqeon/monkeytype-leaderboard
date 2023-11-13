@@ -19,6 +19,9 @@
       "@app/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/services/firebase/api.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"  ],
   "exclude": ["node_modules"]
 }

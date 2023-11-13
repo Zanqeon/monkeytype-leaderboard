@@ -50,7 +50,8 @@ export const StyledCurrentChallengeMobile = styled.div(
 export const StyledCurrentChallengeTitle = styled.div(
   ({ theme: { TYPOGRAPHY, SPACING } }) => css`
     ${TYPOGRAPHY.HEADING_1}
-    margin-top: ${SPACING['02']}
+    text-transform: capitalize;
+    margin-top: ${SPACING['02']};
   `
 );
 
@@ -76,7 +77,8 @@ export const StyledNextChallengeTitle = styled.div(
 export const StyledNextChallengeDescription = styled.div(
   ({ theme: { TYPOGRAPHY, SPACING } }) => css`
     ${TYPOGRAPHY.BODY_LARGE}
-    margin-top: ${SPACING['02']}
+    text-transform: capitalize;
+    margin-top: ${SPACING['02']};
   `
 );
 

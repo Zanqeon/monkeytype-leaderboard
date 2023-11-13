@@ -201,6 +201,7 @@ export const StyledWordsPerMinute = styled.div(
       'LG',
       css`
         width: 6rem;
+        letter-spacing: -1px;
       `
     )}
   `

@@ -23,7 +23,7 @@ export const StyledDescription = styled.div(
   ({ theme: { TYPOGRAPHY, COLOR } }) => css`
     ${TYPOGRAPHY.BODY_LARGE}
     color: ${COLOR.gray};
-
+    text-transform: capitalize;
     display: flex;
     justify-content: center;
     text-align: center;

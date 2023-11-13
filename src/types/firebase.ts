@@ -30,3 +30,32 @@ export interface PreviousWinnerType {
   image?: string;
   nickname?: string;
 }
+
+export interface ChallengeData {
+  id: string;
+  [year: number]: {
+    [month: string]: {
+      type: number;
+      length: number;
+      winner?: {
+        name: string;
+        wpm: number;
+        accuracy: number;
+        image?: string;
+        timestamp: number;
+      };
+    }[];
+  }[];
+}
+
+export interface Challenge {
+  type: number;
+  length: number;
+  winner?: {
+    name: string;
+    wpm: number;
+    accuracy: number;
+    image?: string;
+    timestamp: number;
+  };
+}

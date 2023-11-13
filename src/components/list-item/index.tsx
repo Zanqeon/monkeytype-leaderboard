@@ -14,6 +14,7 @@ import {
 export interface IListItemProps {
   place?: number;
   name: string;
+  nickname?: string;
   wordsPerMinute: number;
   accuracy: string;
   date: string;
@@ -25,14 +26,15 @@ const ListItem = ({
   wordsPerMinute,
   accuracy,
   date,
+  nickname,
 }: IListItemProps) => {
   const { COLOR } = useTheme();
-
   const PLACE_COLORS = {
     1: COLOR.primary,
     2: COLOR.secondary,
     3: COLOR.tertiary,
   };
+
   return (
     <StyledWrapper>
       <StyledPlaceWrapper
@@ -47,7 +49,7 @@ const ListItem = ({
         $hasLabelMobile={place === 1}
       >
         <StyledNameWrapper>
-          <StyledName>{name}</StyledName>
+          <StyledName>{nickname || name}</StyledName>
         </StyledNameWrapper>
         <StyledWordsPerMinute>{wordsPerMinute}</StyledWordsPerMinute>
         <StyledAccuracy>{accuracy}</StyledAccuracy>

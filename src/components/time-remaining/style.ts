@@ -35,6 +35,8 @@ export const StyledContentWrapper = styled.div`
 `;
 
 export const StyledWrapper = styled.div`
+  height: 12rem;
+
   ${media(
     'MD',
     css`
@@ -42,6 +44,7 @@ export const StyledWrapper = styled.div`
       position: absolute;
       left: 0;
       bottom: 0;
+      height: 14.2rem;
     `
   )}
 `;

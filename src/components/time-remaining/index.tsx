@@ -50,17 +50,20 @@ const TimeRemaining = ({ title }: ITimeRemainingProps) => {
   delta -= minutes * 60;
 
   const seconds = Math.floor(delta % 60);
+
   return (
     <StyledContainer>
       <StyledContentWrapper>
         <StyledWrapper>
           <StyledTitle>{title}</StyledTitle>
-          <StyledTime>
-            <span>{formattedTimes(days)} days</span>
-            <span>{formattedTimes(hours)} hours</span>
-            <span>{formattedTimes(minutes)} minutes</span>
-            <span>{formattedTimes(seconds)} seconds</span>
-          </StyledTime>
+          {seconds && (
+            <StyledTime>
+              <span>{formattedTimes(days)} days</span>
+              <span>{formattedTimes(hours)} hours</span>
+              <span>{formattedTimes(minutes)} minutes</span>
+              <span>{formattedTimes(seconds)} seconds</span>
+            </StyledTime>
+          )}
         </StyledWrapper>
       </StyledContentWrapper>
     </StyledContainer>

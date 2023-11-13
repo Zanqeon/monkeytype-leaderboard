@@ -112,13 +112,12 @@ const NUMBER_SMALL = css`
   font-size: 2.4rem;
   font-weight: 500;
   line-height: 2.8rem;
-  letter-spacing: -3px;
+  letter-spacing: -2px;
   color: ${COLOR.white};
 
   ${media(
     'MD',
     css`
-      letter-spacing: -4px;
       font-size: 2.8rem;
       line-height: 3.4rem;
     `

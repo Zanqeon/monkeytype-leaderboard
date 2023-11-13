@@ -1,15 +1,16 @@
+import { REGISTERED_USERS } from '@app/content';
+import { database } from '@app/services/firebase';
+import { UserData } from '@app/types/firebase';
 import {
   collection,
+  doc,
   getDocs,
   setDoc,
   updateDoc,
-  doc,
 } from 'firebase/firestore';
-import { database } from '@app/services/firebase';
-import { REGISTERED_USERS } from '@app/content';
-import { PreviousWinnerType, UserData } from '@app/types/firebase';
+import { NextApiRequest, NextApiResponse } from 'next';
 
-export const fetchFirebaseData = async (): Promise<UserData[]> => {
+const fetchFirebaseData = async (): Promise<UserData[]> => {
   const snapshot = await getDocs(collection(database, 'users'));
   const data = snapshot.docs.map((doc) => ({
     id: doc.id,
@@ -19,18 +20,58 @@ export const fetchFirebaseData = async (): Promise<UserData[]> => {
   return data as UserData[];
 };
 
-const updateUser = async (userId: string) => {
+const createUser = async (userId: string) => {
   const currentDate = new Date();
   const currentYear = currentDate.getUTCFullYear();
   const currentMonth = currentDate.getUTCMonth() + 1;
   const currentTimeStamp = currentDate.valueOf();
-  const currentUserData = (await fetchFirebaseData()).filter(
-    (user) => user.id === userId
-  )[0];
 
-  const nickname = REGISTERED_USERS.find((user) => user.id === userId)
-    ?.nickname;
-  const apiKey = REGISTERED_USERS.find((user) => user.id === userId)?.apiKey;
+  // TODO: Fetch monkeyType user profile here
+  const name = 'Zanqeon';
+  const discordId = '230787092148387840';
+  const discordAvatar = '8e35fd0c16f01ca3d957798440a70058';
+
+  const userRef = doc(database, 'users', userId);
+  await setDoc(userRef, {
+    name: name,
+    lastUpdated: currentTimeStamp,
+    discordId: discordId,
+    discordAvatar: discordAvatar,
+    image: `https://cdn.discordapp.com/avatars/${discordId}/${discordAvatar}.jpg`,
+    records: {
+      [currentYear]: {
+        [currentMonth]: {
+          time: {
+            15: {},
+            30: {},
+            60: {},
+            120: {},
+          },
+          words: {
+            10: {},
+            25: {},
+            50: {},
+            100: {},
+          },
+        },
+      },
+    },
+  });
+
+  // await updateUser(userId);
+};
+
+const updateUser = async (userId: string, userData: UserData[]) => {
+  const currentDate = new Date();
+  const currentYear = currentDate.getUTCFullYear();
+  const currentMonth = currentDate.getUTCMonth() + 1;
+  const currentTimeStamp = currentDate.valueOf();
+  const currentUserData = userData.filter((user) => user.id === userId)[0];
+
+  // Check hardcoded content file
+  const userContent = REGISTERED_USERS.find((user) => user.id === userId);
+  const nickname = userContent?.nickname || '';
+  const apiKey = userContent?.apiKey;
 
   //TODO: Fetch user data from monkeyType here
   console.log('apiKey', apiKey);
@@ -78,55 +119,12 @@ const updateUser = async (userId: string) => {
   });
 };
 
-const createUser = async (userId: string) => {
-  const currentDate = new Date();
-  const currentYear = currentDate.getUTCFullYear();
-  const currentMonth = currentDate.getUTCMonth() + 1;
-  const currentTimeStamp = currentDate.valueOf();
-
-  //Fetch user profile here
-  const name = 'Zanqeon';
-  const discordId = '230787092148387840';
-  const discordAvatar = '8e35fd0c16f01ca3d957798440a70058';
-
-  const userRef = doc(database, 'users', userId);
-  await setDoc(userRef, {
-    name: name,
-    lastUpdated: currentTimeStamp,
-    discordId: discordId,
-    discordAvatar: discordAvatar,
-    image: `https://cdn.discordapp.com/avatars/${discordId}/${discordAvatar}.jpg`,
-    records: {
-      [currentYear]: {
-        [currentMonth]: {
-          time: {
-            15: {},
-            30: {},
-            60: {},
-            120: {},
-          },
-          words: {
-            10: {},
-            25: {},
-            50: {},
-            100: {},
-          },
-        },
-      },
-    },
-  });
-
-  await updateUser(userId);
-};
-
-export const updateUsers = async () => {
-  console.log('updating users');
-  const data = await fetchFirebaseData();
+export const updateUsers = async (userData: UserData[]) => {
   const currentDate = new Date();
   const timestampOneHourAgo = currentDate.valueOf() - 3600000;
 
   // Check if there are new users that have to be created in the database
-  const usersInDataBase = data.map((user) => user.id);
+  const usersInDataBase = userData.map((user) => user.id);
   const registeredUsers = REGISTERED_USERS.map((user) => user.id);
   const usersToCreate = registeredUsers.filter(
     (id) => !usersInDataBase.includes(id)
@@ -137,7 +135,7 @@ export const updateUsers = async () => {
   });
 
   // Check if there are users that have last been updated more than an hour ago
-  const usersInDataBaseToUpdate = data
+  const usersInDataBaseToUpdate = userData
     .filter((user) => user.lastUpdated < timestampOneHourAgo)
     .map((users) => users.id);
 
@@ -145,25 +143,33 @@ export const updateUsers = async () => {
     usersInDataBaseToUpdate.includes(id)
   );
 
+  if (!usersToUpdate.length) {
+    //check if there are any matches between the users in the content & users in the database that haven't been updated in an hour
+    console.log('all users up to date');
+    return;
+  }
+
+  console.log('updating the following users:', usersToUpdate);
   usersToUpdate.forEach((user) => {
-    updateUser(user);
+    updateUser(user, userData);
   });
 };
 
-export const getPreviousWinner = async (): Promise<PreviousWinnerType> => {
-  const data = await fetchFirebaseData();
-  // TODO: find out the best WPM result of last months challenge
-  // TODO: write challenges to database
-  const user = data.filter((user: UserData) => user.id === '0000001')[0];
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  if (req.method !== 'GET') {
+    res.status(405);
+    return;
+  }
 
-  const wpm = 102;
-  const accuracy = 88;
+  try {
+    const userData = await fetchFirebaseData();
+    await updateUsers(userData);
 
-  return {
-    name: user.name,
-    nickname: user.nickname,
-    wpm: wpm,
-    accuracy: accuracy,
-    image: user?.image,
-  };
-};
+    res.end();
+  } catch (error) {
+    throw error;
+  }
+}
