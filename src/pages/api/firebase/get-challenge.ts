@@ -77,6 +77,7 @@ export default async function handler(
         ...(previousChallenge?.winner && {
           winner: {
             name: previousChallenge.winner?.name,
+            id: previousChallenge.winner?.id,
             image: previousChallenge.winner?.image,
             wordsPerMinute: previousChallenge.winner?.record?.wpm,
             accuracy: `${Math.floor(

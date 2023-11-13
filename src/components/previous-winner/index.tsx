@@ -16,10 +16,12 @@ import {
   StyledResult,
   StyledEmoji,
 } from './style';
+import { REGISTERED_USERS } from '@app/content';
 
 export interface IPreviousWinnerProps {
   title: string;
   description: string;
+  id: string;
   name: string;
   image?: string;
   wpm: number;
@@ -30,10 +32,13 @@ const PreviousWinner = ({
   title,
   description,
   name,
+  id,
   image,
   wpm,
   accuracy,
 }: IPreviousWinnerProps) => {
+  const showImage = REGISTERED_USERS.find((user) => user.id === id)
+    ?.showDiscordImage;
   return (
     <Container>
       <StyledTitle>{title}</StyledTitle>
@@ -41,7 +46,7 @@ const PreviousWinner = ({
       <StyledWrapper>
         <StyledCard>
           <StyledHeader>
-            {image && (
+            {image && showImage && (
               <StyledImageContainer>
                 <StyledImageWrapper>
                   <Image src={image} alt="avatar" height={48} width={48} />

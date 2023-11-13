@@ -14,54 +14,63 @@ export interface ITimeRemainingProps {
 const TimeRemaining = ({ title }: ITimeRemainingProps) => {
   const [secondsBetweenDates, setSecondsBetweenDates] = useState(0);
 
+  const currentDate = new Date();
+  const dateNextMonth = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth() + 1,
+    1
+  );
+
   const formattedTimes = (number: number) =>
     number.toLocaleString('en-US', {
       minimumIntegerDigits: 2,
     });
 
-  useEffect(() => {
-    const currentDate = new Date();
-    const dateNextMonth = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth() + 1,
-      1
-    );
+  const timeLeft = () => {
+    var delta = secondsBetweenDates;
 
-    const secondsBetweenDates = Math.abs(
+    const days = Math.floor(delta / 86400);
+    delta -= days * 86400;
+
+    const hours = Math.floor(delta / 3600) % 24;
+    delta -= hours * 3600;
+
+    const minutes = Math.floor(delta / 60) % 60;
+    delta -= minutes * 60;
+
+    const seconds = Math.floor(delta % 60);
+
+    return {
+      days: formattedTimes(days),
+      hours: formattedTimes(hours),
+      minutes: formattedTimes(minutes),
+      seconds: formattedTimes(seconds),
+    };
+  };
+
+  useEffect(() => {
+    const newSecondsBetweenDates = Math.abs(
       (currentDate.getTime() - dateNextMonth.getTime()) / 1000
     );
 
     const timer = setTimeout(() => {
-      setSecondsBetweenDates(secondsBetweenDates);
+      setSecondsBetweenDates(newSecondsBetweenDates);
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [secondsBetweenDates]);
-
-  var delta = secondsBetweenDates;
-
-  const days = Math.floor(delta / 86400);
-  delta -= days * 86400;
-
-  const hours = Math.floor(delta / 3600) % 24;
-  delta -= hours * 3600;
-
-  const minutes = Math.floor(delta / 60) % 60;
-  delta -= minutes * 60;
-
-  const seconds = Math.floor(delta % 60);
+  }, [secondsBetweenDates, currentDate, dateNextMonth]);
 
   return (
     <StyledContainer>
       <StyledContentWrapper>
         <StyledWrapper>
           <StyledTitle>{title}</StyledTitle>
-          {seconds && (
+          {secondsBetweenDates > 0 && (
             <StyledTime>
-              <span>{formattedTimes(days)} days</span>
-              <span>{formattedTimes(hours)} hours</span>
-              <span>{formattedTimes(minutes)} minutes</span>
-              <span>{formattedTimes(seconds)} seconds</span>
+              <span>{timeLeft().days} days</span>
+              <span>{timeLeft().hours} hours</span>
+              <span>{timeLeft().minutes} minutes</span>
+              <span>{timeLeft().seconds} seconds</span>
             </StyledTime>
           )}
         </StyledWrapper>

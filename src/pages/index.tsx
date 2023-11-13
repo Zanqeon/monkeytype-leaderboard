@@ -13,10 +13,13 @@ import {
 import { useEffect, useState } from 'react';
 
 export default function Home() {
-  const [needsUpdating, setNeedsUpdating] = useState(true);
+  const USERS_TO_SHOW = 10;
+  const [needsUpdating, setNeedsUpdating] = useState(false);
+  const { data: fetchedChallenges } = useFireBaseChallenge();
+  const { data: fetchedUsers } = useFirebaseData();
 
-  const { data: challenges } = useFireBaseChallenge();
-  const { data: users } = useFirebaseData();
+  const [challenges, setChallenges] = useState(fetchedChallenges);
+  const [users, setUsers] = useState(fetchedUsers);
 
   useEffect(() => {
     if (needsUpdating) {
@@ -24,6 +27,17 @@ export default function Home() {
       fetch(`/api/firebase/update-challenge`);
       setNeedsUpdating(false);
     }
+
+    fetch(`/api/firebase/get-challenge`)
+      .then((response) => response.json())
+      .then((data) => {
+        setChallenges(data);
+      });
+    fetch(`/api/firebase/get-data`)
+      .then((response) => response.json())
+      .then((data) => {
+        setUsers(data);
+      });
   }, [needsUpdating]);
 
   useEffect(() => {
@@ -31,9 +45,9 @@ export default function Home() {
     return () => clearInterval(id);
   }, []);
 
-  console.log(challenges?.previousChallenge?.winner);
+  const previousChallengeWinner = challenges?.previousChallenge?.winner;
 
-  if (users && challenges) {
+  if (users) {
     return (
       <>
         <Head>
@@ -56,17 +70,20 @@ export default function Home() {
               description: challenges?.nextChallenge?.description,
             }}
           />
-          <List {...content.monkeyTypeDate} items={users} />
+          <List
+            {...content.monkeyTypeDate}
+            items={users.slice(0, USERS_TO_SHOW)}
+          />
           <PreviousWinner
+            id={previousChallengeWinner.id}
             title={challenges?.previousChallenge?.title}
             description={challenges?.previousChallenge?.description}
             name={
-              challenges?.previousChallenge?.winner.nickname ||
-              challenges?.previousChallenge?.winner.name
+              previousChallengeWinner?.nickname || previousChallengeWinner?.name
             }
-            image={challenges?.previousChallenge?.winner.image}
-            wpm={challenges?.previousChallenge?.winner.wordsPerMinute}
-            accuracy={challenges?.previousChallenge?.winner.accuracy}
+            image={previousChallengeWinner?.image}
+            wpm={previousChallengeWinner?.wordsPerMinute}
+            accuracy={previousChallengeWinner?.accuracy}
           />
           <TimeRemaining title="Time remaining" />
           <QRCode {...content.QRCode} />

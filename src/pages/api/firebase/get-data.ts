@@ -1,5 +1,6 @@
+import { REGISTERED_USERS } from '@app/content';
 import { database } from '@app/services/firebase';
-import { UserData } from '@app/types/firebase';
+import { ChallengeData, UserData } from '@app/types/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -19,27 +20,48 @@ export default async function handler(
       ...doc.data(),
     })) as UserData[];
 
-    const userData = data
-      .map((user) => {
-        const currentDate = new Date();
-        const currentYear = currentDate.getUTCFullYear();
-        const currentMonth = currentDate.getUTCMonth() + 1;
-        const currentChallenge = 'time';
-        const currentLength = 30;
+    const challengeSnapshot = await getDocs(collection(database, 'challenges'));
+    const challengeData = challengeSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as ChallengeData[];
 
-        const wordsPerMinute = // @ts-ignore
-          user.records[currentYear][currentMonth][currentChallenge][
-            currentLength
+    const currentDate = new Date();
+    const currentYear = currentDate.getUTCFullYear();
+    const currentMonth = currentDate.getUTCMonth() + 1;
+
+    const currentChallenge = challengeData.find(
+      (element) => element.id === currentYear.toString()
+    )?.[currentMonth] as any;
+
+    const usersInDataBase = data.map((user) => user.id);
+    const registeredUsers = REGISTERED_USERS.map((user) => user.id);
+    const activeUsers = registeredUsers.filter((id) =>
+      usersInDataBase.includes(id)
+    );
+
+    const userData = data
+      .filter(
+        (user) =>
+          activeUsers.includes(user.id) &&
+          user?.records?.[currentYear]?.[currentMonth]?.[
+            currentChallenge.type // @ts-ignore
+          ]?.[currentChallenge.length.toString()]?.wpm
+      )
+      .map((user) => {
+        const wordsPerMinute =
+          user.records[currentYear][currentMonth][currentChallenge.type][
+            currentChallenge.length // @ts-ignore
           ].wpm;
 
         const accuracy = // @ts-ignore
-          user.records[currentYear][currentMonth][currentChallenge][
-            currentLength
+          user.records[currentYear][currentMonth][currentChallenge.type][
+            currentChallenge.length // @ts-ignore
           ].accuracy;
 
         const recordTimestamp = // @ts-ignore
-          user.records[currentYear][currentMonth][currentChallenge][
-            currentLength
+          user.records[currentYear][currentMonth][currentChallenge.type][
+            currentChallenge.length // @ts-ignore
           ].timestamp;
 
         const formattedRecordDate = recordTimestamp
@@ -54,8 +76,8 @@ export default async function handler(
           name: user.name,
           nickname: user.nickname,
           image: user.image,
-          wordsPerMinute: wordsPerMinute ? Math.floor(wordsPerMinute) : 0,
-          accuracy: accuracy ? Math.floor(accuracy) : 0,
+          wordsPerMinute: Math.floor(wordsPerMinute),
+          accuracy: Math.floor(accuracy),
           date: formattedRecordDate,
         };
       })

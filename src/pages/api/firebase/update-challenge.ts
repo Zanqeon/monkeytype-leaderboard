@@ -91,11 +91,10 @@ export default async function handler(
         ...doc.data(),
       })) as any[];
 
+      // @ts-ignore
       const previousChallenge = challengesData.find(
-        (challenge) =>
-          challenge.id ===
-          previousChallengeYear.toString()?.[previousChallengeMonth]
-      ) as any;
+        (challenge) => challenge.id === previousChallengeYear.toString()
+      )?.[previousChallengeMonth.toString()];
 
       //Set record when there is no winner yet of last month
       if (!previousChallenge?.winner) {
@@ -108,6 +107,8 @@ export default async function handler(
           )
           .map((user) => ({
             name: user.nickname || user.name,
+            image: user?.image,
+            id: user.id,
             record: {
               wpm: user.records?.[previousChallengeYear]?.[
                 previousChallengeMonth
@@ -151,6 +152,8 @@ export default async function handler(
             },
           });
         }
+
+        res.end();
       }
     }
 
