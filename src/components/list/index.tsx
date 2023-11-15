@@ -7,12 +7,15 @@ export interface IListProps {
 }
 
 const List = ({ items }: IListProps) => {
+  const USERS_TO_SHOW = 10;
   return (
     <Container>
       <StyledList>
-        {items.map((item: IListItemProps, idx: number) => (
-          <ListItem {...item} place={idx + 1} key={idx} />
-        ))}
+        {items
+          .slice(0, USERS_TO_SHOW)
+          .map((item: IListItemProps, idx: number) => (
+            <ListItem {...item} place={idx + 1} key={idx} />
+          ))}
       </StyledList>
     </Container>
   );

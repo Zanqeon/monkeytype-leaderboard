@@ -86,45 +86,45 @@ export default {
 
 export const REGISTERED_USERS = [
   {
-    id: '0000001',
-    nickname: 'Person 1',
-    showDiscordImage: true,
+    username: 'Zanqeon',
+    nickname: 'Tim',
+    showDiscordImage: false,
     apiKey: process.env.API_KEY_1,
   },
   {
-    id: '0000002',
+    username: '0000001',
     nickname: 'Person 2',
     apiKey: process.env.API_KEY_2,
   },
   {
-    id: '0000003',
+    username: '0000002',
     nickname: 'Person 3',
     apiKey: process.env.API_KEY_3,
   },
 
   {
-    id: '0000004',
+    username: '0000003',
     nickname: 'Person 4',
     showDiscordImage: true,
     apiKey: process.env.API_KEY_4,
   },
   {
-    id: '0000005',
+    username: '0000004',
     nickname: 'Person 5',
     apiKey: process.env.API_KEY_5,
   },
   {
-    id: '0000006',
+    username: '0000005',
     nickname: 'Person 6',
     apiKey: process.env.API_KEY_6,
   },
   {
+    username: '0000007',
     id: '0000007',
-    nickname: 'Person 7',
     apiKey: process.env.API_KEY_7,
   },
   {
-    id: '0000008',
+    username: '0000008',
     nickname: 'Person 8',
     apiKey: process.env.API_KEY_8,
   },

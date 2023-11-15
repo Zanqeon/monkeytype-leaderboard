@@ -12,6 +12,7 @@ export default async function handler(
     res.status(405);
     return;
   }
+  console.log('getuser');
 
   try {
     const snapshot = await getDocs(collection(database, 'users'));
@@ -35,9 +36,9 @@ export default async function handler(
     )?.[currentMonth] as any;
 
     const usersInDataBase = data.map((user) => user.id);
-    const registeredUsers = REGISTERED_USERS.map((user) => user.id);
+    const registeredUsers = REGISTERED_USERS.map((user) => user.username);
     const activeUsers = registeredUsers.filter((id) =>
-      usersInDataBase.includes(id)
+      usersInDataBase.includes(id as string)
     );
 
     const userData = data
@@ -81,7 +82,6 @@ export default async function handler(
           date: formattedRecordDate,
         };
       })
-      // @ts-ignore
       .sort((a, b) => {
         return (
           b.wordsPerMinute - a.wordsPerMinute ||
@@ -92,6 +92,7 @@ export default async function handler(
 
     res.json(userData);
   } catch (error) {
+    res.status(406);
     throw error;
   }
 }

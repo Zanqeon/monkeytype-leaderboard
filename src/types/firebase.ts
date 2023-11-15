@@ -1,4 +1,8 @@
-export type types = 'time' | 'words';
+import { Timestamp } from "firebase/firestore";
+
+type challengeType = 'time' | 'words';
+type monthsType = string
+type yearType = string
 
 export interface UserData {
   id: string;
@@ -6,12 +10,14 @@ export interface UserData {
   nickname?: string;
   lastUpdated: number;
   image?: string;
-  discordId: number;
-  discordAvatar: number;
+  discordId?: number;
+  discordAvatar?: number;
+  createdAt: Timestamp;
+  uid: string;
   records: {
-    [year: number]: {
-      [month: number]: {
-        [type in types]: {
+    [key in yearType]: {
+      [key in monthsType]: {
+        [key in challengeType]: {
           [length: number]: {
             accuracy: number;
             wpm: number;

@@ -17,6 +17,8 @@ export default async function handler(
     return;
   }
 
+  console.log('check challenge')
+
   const currentDate = new Date();
   const currentYear = currentDate.getUTCFullYear();
   const currentMonth = currentDate.getUTCMonth() + 1;
@@ -68,20 +70,24 @@ export default async function handler(
         currentYear.toString()
       );
 
-      await setDoc(currentYearChallengeRef, {
-        1: generateChallenge(),
-        2: generateChallenge(),
-        3: generateChallenge(),
-        4: generateChallenge(),
-        5: generateChallenge(),
-        6: generateChallenge(),
-        7: generateChallenge(),
-        8: generateChallenge(),
-        9: generateChallenge(),
-        10: generateChallenge(),
-        11: generateChallenge(),
-        12: generateChallenge(),
-      });
+      await setDoc(
+        currentYearChallengeRef,
+        {
+          1: generateChallenge(),
+          2: generateChallenge(),
+          3: generateChallenge(),
+          4: generateChallenge(),
+          5: generateChallenge(),
+          6: generateChallenge(),
+          7: generateChallenge(),
+          8: generateChallenge(),
+          9: generateChallenge(),
+          10: generateChallenge(),
+          11: generateChallenge(),
+          12: generateChallenge(),
+        },
+        { merge: true }
+      );
     }
 
     if (currentYearChallenges) {

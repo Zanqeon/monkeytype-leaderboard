@@ -1,5 +1,7 @@
 import Image from 'next/image';
 import { Container } from '@totemblock/layout';
+import Avatar from 'boring-avatars';
+import { useTheme } from 'styled-components';
 import {
   StyledWrapper,
   StyledImageContainer,
@@ -16,29 +18,40 @@ import {
   StyledResult,
   StyledEmoji,
 } from './style';
-import { REGISTERED_USERS } from '@app/content';
+import { getColorArray } from '@app/utils/get-color-array';
 
 export interface IPreviousWinnerProps {
   title: string;
   description: string;
-  id: string;
+  displayName: string;
   name: string;
   image?: string;
   wpm: number;
   accuracy: string;
+  showImage: boolean;
 }
 
 const PreviousWinner = ({
   title,
   description,
-  name,
-  id,
+  displayName,
   image,
   wpm,
   accuracy,
+  showImage,
 }: IPreviousWinnerProps) => {
-  const showImage = REGISTERED_USERS.find((user) => user.id === id)
-    ?.showDiscordImage;
+  const { COLOR } = useTheme();
+
+  const COLOR_GRADIENT_MAP = [
+    getColorArray(COLOR.primary),
+    getColorArray(COLOR.secondary),
+    getColorArray(COLOR.tertiary),
+    getColorArray(COLOR.quaternary),
+  ];
+
+  const randomColorScheme =
+    COLOR_GRADIENT_MAP[Math.floor(Math.random() * COLOR_GRADIENT_MAP.length)];
+
   return (
     <Container>
       <StyledTitle>{title}</StyledTitle>
@@ -46,17 +59,26 @@ const PreviousWinner = ({
       <StyledWrapper>
         <StyledCard>
           <StyledHeader>
-            {image && showImage && (
-              <StyledImageContainer>
-                <StyledImageWrapper>
+            <StyledImageContainer>
+              <StyledImageWrapper>
+                {image && showImage && (
                   <Image src={image} alt="avatar" height={48} width={48} />
-                </StyledImageWrapper>
-                <StyledEmoji>👑</StyledEmoji>
-              </StyledImageContainer>
-            )}
+                )}
+                {!image ||
+                  (!showImage && (
+                    <Avatar
+                      size={48}
+                      name={displayName}
+                      variant="pixel"
+                      colors={randomColorScheme}
+                    />
+                  ))}
+              </StyledImageWrapper>
+              <StyledEmoji>👑</StyledEmoji>
+            </StyledImageContainer>
           </StyledHeader>
           <StyledContentContainer>
-            <StyledName>{name}</StyledName>
+            <StyledName>{displayName}</StyledName>
             <StyledResult>
               <StyledLabel>WPM</StyledLabel>
               <StyledWordsPerMinute>{wpm}</StyledWordsPerMinute>

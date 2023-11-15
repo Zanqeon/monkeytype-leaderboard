@@ -1,6 +1,5 @@
 import { database } from '@app/services/firebase';
-import { ChallengeData } from '@app/types/firebase';
-import { mapChallenges } from '@app/utils/mappers/map-previous-winner';
+import { UserData } from '@app/types/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -12,18 +11,18 @@ export default async function handler(
     res.status(405);
     return;
   }
+  console.log('getuser');
 
   try {
-    const snapshot = await getDocs(collection(database, 'challenges'));
+    const snapshot = await getDocs(collection(database, 'users'));
     const data = snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
-    })) as ChallengeData[];
+    })) as UserData[];
 
-    const mappedChallengeData = mapChallenges(data)
-
-    res.json(mappedChallengeData);
+    res.json(data);
   } catch (error) {
+    res.status(406);
     throw error;
   }
 }
