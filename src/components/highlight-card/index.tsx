@@ -60,7 +60,7 @@ const HighlightCard = ({
               alt="avatar"
               sizes="(min-width: 0px) 80px"
               fill
-              objectFit="cover"
+              style={{ objectFit: 'cover' }}
             />
           </StyledImageWrapper>
         )}

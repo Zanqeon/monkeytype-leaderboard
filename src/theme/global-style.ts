@@ -15,6 +15,13 @@ const GlobalStyle = createGlobalStyle`
         -moz-osx-smoothing: grayscale;
     }
 
+    main {
+        background: #000;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
     ol,
     ul {
         list-style: none;
@@ -22,6 +29,15 @@ const GlobalStyle = createGlobalStyle`
 
     a {
         text-decoration: none;
+    }
+
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 100;
+        }
     }
 `;
 

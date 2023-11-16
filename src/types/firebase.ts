@@ -1,61 +1,52 @@
-export type types = 'time' | 'words';
+import { Timestamp } from 'firebase/firestore';
+
+export type ChallengeType = 'time' | 'words';
 
 export interface UserData {
-  id: string;
-  name: string;
-  nickname?: string;
+  uid: string;
+  username: string;
+  displayName: string;
   lastUpdated: number;
   image?: string;
-  discordId: number;
-  discordAvatar: number;
+  showDiscordImage: boolean;
+  discordId?: number;
+  discordAvatar?: number;
+  createdAt: Timestamp;
   records: {
-    [year: number]: {
-      [month: number]: {
-        [type in types]: {
+    [year: string]: {
+      [month: string]: {
+        [key in ChallengeType]: {
           [length: number]: {
             accuracy: number;
             wpm: number;
             timestamp: number;
-          }[];
-        }[];
-      }[];
-    }[];
+          };
+        };
+      };
+    };
   };
 }
 
-export interface PreviousWinnerType {
-  name: string;
-  wpm: number;
-  accuracy: number;
+export interface Winner {
+  username: string;
+  displayName: string;
   image?: string;
-  nickname?: string;
-}
-
-export interface ChallengeData {
-  id: string;
-  [year: number]: {
-    [month: string]: {
-      type: number;
-      length: number;
-      winner?: {
-        name: string;
-        wpm: number;
-        accuracy: number;
-        image?: string;
-        timestamp: number;
-      };
-    }[];
-  }[];
+  showDiscordImage: boolean;
+  record: {
+    timestamp: number;
+    wpm: number;
+    accuracy: number;
+  };
 }
 
 export interface Challenge {
-  type: number;
+  type: ChallengeType;
   length: number;
-  winner?: {
-    name: string;
-    wpm: number;
-    accuracy: number;
-    image?: string;
-    timestamp: number;
+  winner?: Winner;
+}
+
+export interface ChallengesData {
+  [year: string]: {
+    [month: string]: Challenge;
   };
 }

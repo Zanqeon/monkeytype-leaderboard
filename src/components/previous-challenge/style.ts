@@ -53,10 +53,10 @@ export const StyledCard = styled.div`
 `;
 
 export const StyledHeader = styled.div(
-  ({ theme: { COLOR, RADIUS, SPACING } }) => css`
+  ({ theme: { COLOR, RADIUS } }) => css`
     display: flex;
     position: relative;
-    height: ${SPACING['06']};
+    height: 4.4rem;
     background: ${COLOR.quaternary};
     border-top-left-radius: ${RADIUS['02']};
     border-top-right-radius: ${RADIUS['02']};
@@ -69,9 +69,10 @@ export const StyledImageWrapper = styled.div(
   ({ theme: { COLOR } }) => css`
     position: absolute;
     left: 1.6rem;
-    width: 4.8rem;
-    height: 4.8rem;
+    width: 5.2rem;
+    height: 5.2rem;
     border: 2px solid ${COLOR.black};
+    background-color: ${COLOR.quaternary};
     border-radius: 50%;
     overflow: hidden;
     top: 1.6rem;
@@ -164,8 +165,8 @@ export const StyledEmoji = styled.div`
   ${media(
     'MD',
     css`
-      left: 4.2rem;
-      top: 0.2rem;
+      left: 4.5rem;
+      top: 0.3rem;
     `
   )};
 `;

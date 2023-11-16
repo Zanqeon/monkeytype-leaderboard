@@ -1,94 +1,97 @@
-import Head from 'next/head';
-import COLOR from '@app/theme/basic/color';
 import PageHeader from '@app/components/page-header';
-import content from '@app/content';
-import QRCode from '@app/components/qr-code';
+import content, { DEFAULT_LEADERBOARD } from '@app/content';
 import List from '@app/components/list';
-import PreviousWinner from '@app/components/previous-winner';
-import TimeRemaining from '@app/components/time-remaining';
+import BottomSection from '@app/components/bottom-section';
+import { useEffect } from 'react';
+import { HomepageProps } from '@app/types/homepage';
+import router from 'next/router';
+import { mapChallenges } from '@app/utils/mappers/map-challenges';
+import { mapCurrentChallengeLeaderboard } from '@app/utils/mappers/map-current-challenge-leaderboard';
+import { ChallengesData, UserData } from '@app/types/firebase';
 import {
-  useFireBaseChallenge,
-  useFirebaseData,
-} from '@app/services/firebase/hooks';
-import { useEffect, useState } from 'react';
+  checkChallengesToCreateOrUpdate,
+  checkUsersToCreateOrUpdate,
+  getChallenges,
+  getUsers,
+} from '@app/services/firebase/api';
 
-export default function Home() {
-  const USERS_TO_SHOW = 10;
-  const [needsUpdating, setNeedsUpdating] = useState(false);
-  const { data: fetchedChallenges } = useFireBaseChallenge();
-  const { data: fetchedUsers } = useFirebaseData();
+export default function Home({
+  currentChallengeLeaderboard,
+  previousChallenge,
+  currentChallenge,
+  nextChallenge,
+  isLoading,
+}: HomepageProps) {
+  const REFRESH_TIME_IN_MS = 1000000;
 
-  const [challenges, setChallenges] = useState(fetchedChallenges);
-  const [users, setUsers] = useState(fetchedUsers);
-
+  // Force a router replace in order to serve the new static page
   useEffect(() => {
-    if (needsUpdating) {
-      fetch(`/api/firebase/update-data`);
-      fetch(`/api/firebase/update-challenge`);
-      setNeedsUpdating(false);
+    if (isLoading) {
+      router.replace(router.asPath);
     }
-
-    fetch(`/api/firebase/get-challenge`)
-      .then((response) => response.json())
-      .then((data) => {
-        setChallenges(data);
-      });
-    fetch(`/api/firebase/get-data`)
-      .then((response) => response.json())
-      .then((data) => {
-        setUsers(data);
-      });
-  }, [needsUpdating]);
-
-  useEffect(() => {
-    const id = setInterval(() => setNeedsUpdating(true), 15000);
+    const id = setInterval(
+      () => router.replace(router.asPath),
+      REFRESH_TIME_IN_MS
+    );
     return () => clearInterval(id);
   }, []);
 
-  const previousChallengeWinner = challenges?.previousChallenge?.winner;
-
-  if (users) {
+  if (!isLoading) {
     return (
       <>
-        <Head>
-          <title>MonkeyType Touchtribe</title>
-          <meta
-            name="description"
-            content="A MonkeyType leaderboard for Touchtribe "
-          />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-        <main style={{ background: COLOR.black, flex: 1 }}>
-          <PageHeader
-            currentChallenge={{
-              title: challenges?.currentChallenge?.title,
-              description: challenges?.currentChallenge?.description,
-            }}
-            nextChallenge={{
-              title: challenges?.nextChallenge?.title,
-              description: challenges?.nextChallenge?.description,
-            }}
-          />
-          <List
-            {...content.monkeyTypeDate}
-            items={users.slice(0, USERS_TO_SHOW)}
-          />
-          <PreviousWinner
-            id={previousChallengeWinner.id}
-            title={challenges?.previousChallenge?.title}
-            description={challenges?.previousChallenge?.description}
-            name={
-              previousChallengeWinner?.nickname || previousChallengeWinner?.name
-            }
-            image={previousChallengeWinner?.image}
-            wpm={previousChallengeWinner?.wordsPerMinute}
-            accuracy={previousChallengeWinner?.accuracy}
-          />
-          <TimeRemaining title="Time remaining" />
-          <QRCode {...content.QRCode} />
-        </main>
+        <PageHeader
+          currentChallenge={currentChallenge}
+          nextChallenge={nextChallenge}
+        />
+        <List
+          {...content.monkeyTypeDate}
+          items={currentChallengeLeaderboard || DEFAULT_LEADERBOARD}
+        />
+        <BottomSection previousChallenge={previousChallenge} />
       </>
     );
-  } else return '';
+  }
 }
+
+export const getStaticProps = async () => {
+  const challenges: ChallengesData = await getChallenges();
+  const users: UserData[] = await getUsers();
+  await checkUsersToCreateOrUpdate(users);
+  await checkChallengesToCreateOrUpdate(challenges, users);
+
+  if (Object.keys(users).length && Object.keys(challenges).length) {
+    const { currentChallengeLeaderboard } = mapCurrentChallengeLeaderboard(
+      users,
+      challenges
+    );
+    const { previousChallenge, currentChallenge, nextChallenge } =
+      mapChallenges(challenges);
+
+    return {
+      props: {
+        previousChallenge,
+        currentChallenge,
+        nextChallenge,
+        currentChallengeLeaderboard,
+        challenges,
+        isLoading: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      isLoading: true,
+    },
+  };
+
+  // TODO: Move this logic to CRON job vercel
+  // await fetch(`${process.env.BASE_URL}/api/firebase/check-users`);
+  // await fetch(`${process.env.BASE_URL}/api/firebase/check-challenges`);
+
+  // Make mappers here which return logical information ()
+
+  // Do checkCreateUsers here (check users object vs REGISTERED)
+  // Do checkUsers fetch here to check if updates need to be done (but only check firebase if REGISTERED_USERS !== users, since users gets fetched every hour anyway)
+  // Do checkChallenges fetch here to check if updates need to be done (but only check firebase if there either no challenges for this year yet, or if there is no winner of previousMonth yet, so this firebase connection should only happens maximum of 13 times per year)
+};
