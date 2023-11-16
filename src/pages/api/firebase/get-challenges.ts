@@ -1,6 +1,6 @@
 import { database } from '@app/services/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { collection, getDocs } from 'firebase/firestore';
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,15 +12,12 @@ export default async function handler(
   }
 
   try {
-    const snapshot = await getDocs(collection(database, 'users'));
-    const data = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    const docRef = doc(database, 'challenges', 'default');
+    const docSnap = await getDoc(docRef);
+    const data = docSnap.data();
 
     res.json(data);
   } catch (error) {
-    res.status(406);
     throw error;
   }
 }

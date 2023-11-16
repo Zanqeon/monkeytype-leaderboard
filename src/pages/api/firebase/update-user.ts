@@ -1,31 +1,38 @@
-import { REGISTERED_USERS } from "@app/content";
-import { database } from "@app/services/firebase";
-import { UserData } from "@app/types/firebase";
-import { doc, updateDoc } from "firebase/firestore";
+import { REGISTERED_USERS } from '@app/content';
+import { database } from '@app/services/firebase';
+import { UserData } from '@app/types/firebase';
+import { doc, updateDoc } from 'firebase/firestore';
 
-export const updateUser = async (userId: string, userData: UserData[]) => {
+export const updateUser = async (username: string, userData: UserData[]) => {
   const currentDate = new Date();
   const currentYear = currentDate.getUTCFullYear();
   const currentMonth = currentDate.getUTCMonth() + 1;
   const currentTimeStamp = currentDate.valueOf();
-  const currentUserData = userData.filter((user) => user.id === userId)[0];
+  const currentUserData = userData.find(
+    (user) => user.username === username
+  ) as UserData;
 
-  // Check hardcoded content file
-  const userContent = REGISTERED_USERS.find((user) => user.id === userId);
-  const nickname = userContent?.nickname || '';
-  const apiKey = userContent?.apiKey;
+  // Get user content from REGISTERED_USERS
+  const userContent = REGISTERED_USERS.find(
+    (user) => user.username === username
+  );
+  const displayName = userContent?.displayName || userContent?.username;
+  // const apiKey = userContent?.apiKey;
   const showDiscordImage = userContent?.showDiscordImage || false;
 
   //TODO: Fetch user results from monkeyType here
-  const startFetchFromTimeStamp = new Date(Date.UTC(currentYear, currentDate.getUTCMonth(), 1));
-  console.log('apiKey', apiKey);
+  const startFetchFromTimeStamp = new Date(
+    Date.UTC(currentYear, currentDate.getUTCMonth(), 1)
+  );
+
+  console.log('startFetchFromTimeStamp', startFetchFromTimeStamp);
 
   function getRandomInt(min: number, max: number) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
-  const name = 'Zanqeon'; // get name from monkeyType
+
   const type = 'time';
   const lengths = [15, 30, 60, 120];
   const length = lengths[Math.floor(Math.random() * lengths.length)]; //TODO: replace with length from monkeyType
@@ -40,11 +47,11 @@ export const updateUser = async (userId: string, userData: UserData[]) => {
   // TODO: Check against best result on the store
   // If WPM from the fetched info is better than the one in firestore, do updateDoc
 
-  const userRef = doc(database, 'users', userId);
+  const userRef = doc(database, 'users', username);
   await updateDoc(userRef, {
     ...currentUserData,
-    name: name,
-    nickname: nickname,
+    username: currentUserData.username,
+    displayName: displayName,
     showDiscordImage: showDiscordImage,
     lastUpdated: currentTimeStamp,
     records: {
@@ -54,7 +61,6 @@ export const updateUser = async (userId: string, userData: UserData[]) => {
         [currentMonth]: {
           ...currentUserData.records[currentYear][currentMonth],
           [type]: {
-            // @ts-ignore
             ...currentUserData.records[currentYear][currentMonth][type],
             [length]: currentMonthRecord,
           },
@@ -62,4 +68,5 @@ export const updateUser = async (userId: string, userData: UserData[]) => {
       },
     },
   });
+  console.log('Successfully updated user:', username);
 };

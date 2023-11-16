@@ -1,4 +1,5 @@
 import { useTheme } from 'styled-components';
+import { getFormattedRecordDate } from '@app/utils/get-formatted-date';
 import {
   StyledWrapper,
   StyledPlaceWrapper,
@@ -13,20 +14,18 @@ import {
 
 export interface IListItemProps {
   place?: number;
-  name: string;
-  nickname?: string;
+  displayName?: string;
   wordsPerMinute: number;
-  accuracy: string;
-  date: string;
+  accuracy: number;
+  timestamp: number;
 }
 
 const ListItem = ({
   place,
-  name,
   wordsPerMinute,
   accuracy,
-  date,
-  nickname,
+  timestamp,
+  displayName,
 }: IListItemProps) => {
   const { COLOR } = useTheme();
   const PLACE_COLORS = {
@@ -49,11 +48,13 @@ const ListItem = ({
         $hasLabelMobile={place === 1}
       >
         <StyledNameWrapper>
-          <StyledName>{nickname || name}</StyledName>
+          <StyledName>{displayName}</StyledName>
         </StyledNameWrapper>
-        <StyledWordsPerMinute>{wordsPerMinute}</StyledWordsPerMinute>
-        <StyledAccuracy>{accuracy}</StyledAccuracy>
-        <StyledDate>{date}</StyledDate>
+        <StyledWordsPerMinute>
+          {wordsPerMinute ? wordsPerMinute : ''}
+        </StyledWordsPerMinute>
+        <StyledAccuracy>{accuracy ? accuracy : ''}</StyledAccuracy>
+        <StyledDate>{getFormattedRecordDate(timestamp)}</StyledDate>
       </StyledContentWrapper>
     </StyledWrapper>
   );

@@ -8,6 +8,7 @@ export interface IListProps {
 
 const List = ({ items }: IListProps) => {
   const USERS_TO_SHOW = 10;
+
   return (
     <Container>
       <StyledList>

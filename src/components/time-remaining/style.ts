@@ -9,7 +9,6 @@ export const StyledContainer = styled(Container)(
     flex-direction: column;
     align-items: center;
     margin-top: ${SPACING['06']};
-    margin-bottom: ${SPACING['06']};
 
     ${media(
       'MD',
@@ -62,5 +61,6 @@ export const StyledTime = styled.div(
     margin-top: ${SPACING['01']};
     display: flex;
     flex-direction: column;
+    animation: fade-in 0.4s ease-in forwards;
   `
 );

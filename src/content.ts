@@ -1,5 +1,37 @@
 import QRCodeImage from 'public/qr-monkeytype.svg';
+import { IPreviousChallengeProps } from './components/previous-challenge';
+import { IListProps } from './components/list';
 // import QRCodeImageAccount from 'public/qr-monkeytype-account.svg';
+
+export const REGISTERED_USERS = [
+  {
+    username: 'Zanqeon',
+    displayName: 'Tim',
+    showDiscordImage: false,
+    apiKey: process.env.API_KEY_1,
+  },
+  {
+    username: 'goldrider10',
+    displayName: 'Tim 2',
+    apiKey: process.env.API_KEY_2,
+  },
+];
+
+export const DEFAULT_WINNER: IPreviousChallengeProps['winner'] = {
+  displayName: 'John Doe',
+  wordsPerMinute: 999,
+  accuracy: 100,
+  showDiscordImage: false,
+};
+
+export const DEFAULT_LEADERBOARD: IListProps['items'] = [
+  {
+    displayName: 'John Doe',
+    wordsPerMinute: 100,
+    accuracy: 90,
+    timestamp: Date.now(),
+  },
+];
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -83,49 +115,3 @@ export default {
     ],
   },
 };
-
-export const REGISTERED_USERS = [
-  {
-    username: 'Zanqeon',
-    nickname: 'Tim',
-    showDiscordImage: false,
-    apiKey: process.env.API_KEY_1,
-  },
-  {
-    username: '0000001',
-    nickname: 'Person 2',
-    apiKey: process.env.API_KEY_2,
-  },
-  {
-    username: '0000002',
-    nickname: 'Person 3',
-    apiKey: process.env.API_KEY_3,
-  },
-
-  {
-    username: '0000003',
-    nickname: 'Person 4',
-    showDiscordImage: true,
-    apiKey: process.env.API_KEY_4,
-  },
-  {
-    username: '0000004',
-    nickname: 'Person 5',
-    apiKey: process.env.API_KEY_5,
-  },
-  {
-    username: '0000005',
-    nickname: 'Person 6',
-    apiKey: process.env.API_KEY_6,
-  },
-  {
-    username: '0000007',
-    id: '0000007',
-    apiKey: process.env.API_KEY_7,
-  },
-  {
-    username: '0000008',
-    nickname: 'Person 8',
-    apiKey: process.env.API_KEY_8,
-  },
-];
