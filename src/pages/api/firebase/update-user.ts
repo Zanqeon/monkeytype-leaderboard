@@ -32,21 +32,18 @@ export const updateUser = async (username: string, userData: UserData[]) => {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
-
   const type = 'time';
-  const lengths = [15, 30, 60, 120];
-  const length = lengths[Math.floor(Math.random() * lengths.length)]; //TODO: replace with length from monkeyType
+  const length = 30;
 
   const currentMonthRecord = {
     // TODO: Get results from monkeyType based on timestamp, filter best result of month
     wpm: getRandomInt(70, 120),
     accuracy: getRandomInt(60, 100),
-    timestamp: 1661422227974,
+    timestamp: getRandomInt(1698800400000, 1701392400),
   };
 
   // TODO: Check against best result on the store
   // If WPM from the fetched info is better than the one in firestore, do updateDoc
-
   const userRef = doc(database, 'users', username);
   await updateDoc(userRef, {
     ...currentUserData,

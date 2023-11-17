@@ -1,30 +1,20 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { getMonkeyTypeProfileByUsername } from './helpers';
+import { REGISTERED_USERS } from '@app/content';
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method !== 'GET') {
-    res.status(405);
-    return;
-  }
+export const getMonkeyTypeProfile = async (username: string) => {
+  // TODO: Type return type
+  const apiKey = REGISTERED_USERS.find(
+    (user) => user.username?.toLowerCase() === username.toLowerCase()
+  )?.apiKey;
 
-  const usernameToFetch = 'Zanqeon';
-
-  try {
-    const { data: monkeyTypeProfile } =
-      await getMonkeyTypeProfileByUsername(usernameToFetch);
-
-    const mappedMonkeyTypeProfile = {
-      name: monkeyTypeProfile.name,
-      discordId: monkeyTypeProfile.discordId,
-      discordAvatar: monkeyTypeProfile.discordAvatar,
-      uid: monkeyTypeProfile.uid,
-    };
-
-    res.json(mappedMonkeyTypeProfile);
-  } catch (error) {
-    throw error;
-  }
-}
+  const response = await fetch(
+    `https://api.monkeytype.com/users/${username}/profile`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `ApeKey ${apiKey}`,
+      },
+    }
+  );
+  return response.json();
+};
