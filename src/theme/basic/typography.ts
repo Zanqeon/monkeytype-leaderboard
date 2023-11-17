@@ -60,7 +60,7 @@ const BODY_LARGE = css`
   font-family: '${FONT.FONT_SECONDARY}';
   font-size: 1.6rem;
   font-weight: 200;
-  line-height: 2rem;
+  line-height: 2.4rem;
   letter-spacing: normal;
   color: ${COLOR.white};
 
@@ -68,7 +68,7 @@ const BODY_LARGE = css`
     'MD',
     css`
       font-size: 2rem;
-      line-height: 2.4rem;
+      line-height: 2.8rem;
     `
   )}
 `;
@@ -112,7 +112,7 @@ const NUMBER_SMALL = css`
   font-size: 2.4rem;
   font-weight: 500;
   line-height: 2.8rem;
-  letter-spacing: -2px;
+  letter-spacing: -1px;
   color: ${COLOR.white};
 
   ${media(

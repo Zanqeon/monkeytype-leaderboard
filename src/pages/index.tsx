@@ -9,11 +9,14 @@ import { mapChallenges } from '@app/utils/mappers/map-challenges';
 import { mapCurrentChallengeLeaderboard } from '@app/utils/mappers/map-current-challenge-leaderboard';
 import { ChallengesData, UserData } from '@app/types/firebase';
 import {
-  // checkChallengesToCreateOrUpdate,
-  // checkUsersToCreateOrUpdate,
+  checkChallengesToCreateOrUpdate,
+  checkUsersToCreateOrUpdate,
   getChallenges,
   getUsers,
 } from '@app/services/firebase/api';
+import PageLoadingIndicator, {
+  LOADING_MESSAGES,
+} from '@app/components/page-loading-indicator';
 
 export default function Home({
   currentChallengeLeaderboard,
@@ -27,7 +30,13 @@ export default function Home({
   // Force a router replace in order to serve the new data
   useEffect(() => {
     if (isLoading) {
-      router.replace(router.asPath);
+      setTimeout(
+        () => {
+          router.replace(router.asPath);
+          //
+        },
+        LOADING_MESSAGES.length * 1.5 * 1000 + 500 + 1000
+      );
     }
     const id = setInterval(
       () => router.replace(router.asPath),
@@ -36,46 +45,53 @@ export default function Home({
     return () => clearInterval(id);
   }, [isLoading]);
 
-  if (!isLoading) {
-    return (
-      <>
-        <PageHeader
-          currentChallenge={currentChallenge}
-          nextChallenge={nextChallenge}
-        />
-        <List
-          {...content.monkeyTypeDate}
-          items={currentChallengeLeaderboard || DEFAULT_LEADERBOARD}
-        />
-        <BottomSection previousChallenge={previousChallenge} />
-      </>
-    );
-  }
+  // return <PageLoadingIndicator />;
+
+  return isLoading ? (
+    <PageLoadingIndicator />
+  ) : (
+    <>
+      <PageHeader
+        currentChallenge={currentChallenge}
+        nextChallenge={nextChallenge}
+      />
+      <List
+        {...content.monkeyTypeDate}
+        items={currentChallengeLeaderboard || DEFAULT_LEADERBOARD}
+      />
+      <BottomSection previousChallenge={previousChallenge} />
+    </>
+  );
 }
 
 export const getServerSideProps = async () => {
   const challenges: ChallengesData = await getChallenges();
   const users: UserData[] = await getUsers();
-  // await checkUsersToCreateOrUpdate(users);
-  // await checkChallengesToCreateOrUpdate(challenges, users);
+  await checkUsersToCreateOrUpdate(users);
+  await checkChallengesToCreateOrUpdate(challenges, users);
 
-  // if (Object.keys(users).length && Object.keys(challenges).length) {
-  const { currentChallengeLeaderboard } = mapCurrentChallengeLeaderboard(
-    users,
-    challenges
-  );
-  const { previousChallenge, currentChallenge, nextChallenge } =
-    mapChallenges(challenges);
+  if (Object.keys(users).length && Object.keys(challenges).length) {
+    const { currentChallengeLeaderboard } = mapCurrentChallengeLeaderboard(
+      users,
+      challenges
+    );
+    const { previousChallenge, currentChallenge, nextChallenge } =
+      mapChallenges(challenges);
 
+    return {
+      props: {
+        previousChallenge,
+        currentChallenge,
+        nextChallenge,
+        currentChallengeLeaderboard,
+        challenges,
+        isLoading: false,
+      },
+    };
+  }
   return {
     props: {
-      previousChallenge,
-      currentChallenge,
-      nextChallenge,
-      currentChallengeLeaderboard,
-      challenges,
-      isLoading: false,
+      isLoading: true,
     },
   };
-  // }
 };

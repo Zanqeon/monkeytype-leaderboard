@@ -53,7 +53,7 @@ const ListItem = ({
         <StyledWordsPerMinute>
           {wordsPerMinute ? wordsPerMinute : ''}
         </StyledWordsPerMinute>
-        <StyledAccuracy>{accuracy ? accuracy : ''}</StyledAccuracy>
+        <StyledAccuracy>{accuracy ? `${accuracy}%` : ''}</StyledAccuracy>
         <StyledDate>{getFormattedRecordDate(timestamp)}</StyledDate>
       </StyledContentWrapper>
     </StyledWrapper>

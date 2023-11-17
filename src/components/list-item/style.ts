@@ -162,20 +162,20 @@ export const StyledContentWrapper = styled.div<{
 export const StyledNameWrapper = styled.div(
   ({ theme: { TYPOGRAPHY } }) => css`
     ${TYPOGRAPHY.BODY_LARGE_SEMIBOLD}
-    max-width: 10rem;
+    width: 10rem;
     flex: 1;
 
     ${media(
       'MD',
       css`
-        max-width: 12rem;
+        width: 12rem;
       `
     )}
 
     ${media(
       'LG',
       css`
-        min-width: 24rem;
+        width: 24rem;
       `
     )}
   `
