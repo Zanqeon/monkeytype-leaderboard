@@ -58,12 +58,16 @@ const PreviousChallenge = ({
       sum += username.charCodeAt(i);
     }
     let result = sum % COLOR_GRADIENT_MAP.length;
+
+    console.log('result', result)
     return result;
   }
 
   // Generates a random colorscheme, based on the name of the user, will always return the same color scheme for the same name
   const randomColorScheme =
     COLOR_GRADIENT_MAP[generateRandom(winner.displayName)];
+
+    console.log('randomColorScheme', randomColorScheme)
 
   if (!isLoading) {
     return (
