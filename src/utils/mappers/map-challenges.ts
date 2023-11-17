@@ -3,13 +3,20 @@ import { ChallengesData } from '@app/types/firebase';
 import { getFormattedRecordDate } from '@app/utils/get-formatted-date';
 
 export function mapChallenges(challenges: ChallengesData) {
+  const currentDate = new Date();
+  const currentYear = currentDate.getUTCFullYear();
+  if (!challenges?.[currentYear])
+    return {
+      previousChallenge: null,
+      currentChallenge: null,
+      nextChallenge: null,
+    };
+
   const getFullMonthName = (date: Date) =>
     date.toLocaleDateString('en-GB', {
       month: 'long',
     });
 
-  const currentDate = new Date();
-  const currentYear = currentDate.getUTCFullYear();
   const currentMonth = currentDate.getUTCMonth() + 1;
   const previousMonthAsDate = currentDate.setMonth(currentDate.getMonth() - 1);
 

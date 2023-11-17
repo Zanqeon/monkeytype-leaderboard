@@ -7,6 +7,9 @@ export function mapCurrentChallengeLeaderboard(
 ) {
   const currentDate = new Date();
   const currentYear = currentDate.getUTCFullYear();
+
+  if (!users || !challenges[currentYear]) return [];
+
   const currentMonth = currentDate.getUTCMonth() + 1;
   const currentChallenge =
     challenges[currentYear.toString()][currentMonth.toString()];
@@ -17,14 +20,16 @@ export function mapCurrentChallengeLeaderboard(
   );
 
   // Check if active users have a score on the current challenge of the month (check if the current challenge object has any keys)
-  const activeUsersCurrentChallenge = activeUsers.filter(
-    (user: UserData) =>
-      Object.keys(
-        user.records[currentYear.toString()][currentMonth.toString()][
-          currentChallenge.type
-        ][currentChallenge.length]
-      ).length > 0
-  );
+  const activeUsersCurrentChallenge = activeUsers.filter((user) => {
+    const userHasScoreForCurrentChallenge =
+      user.records?.[currentYear.toString()]?.[currentMonth.toString()]?.[
+        currentChallenge.type
+      ]?.[currentChallenge.length];
+
+    if (userHasScoreForCurrentChallenge) {
+      return user;
+    }
+  });
 
   const currentChallengeLeaderboard = activeUsersCurrentChallenge
     .map((user) => {
@@ -50,5 +55,5 @@ export function mapCurrentChallengeLeaderboard(
       );
     });
 
-  return { currentChallengeLeaderboard };
+  return currentChallengeLeaderboard;
 }
