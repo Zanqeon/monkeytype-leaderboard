@@ -13,7 +13,6 @@ export interface ITimeRemainingProps {
 
 const TimeRemaining = ({ title }: ITimeRemainingProps) => {
   const [secondsBetweenDates, setSecondsBetweenDates] = useState(0);
-
   const currentDate = new Date();
   const dateNextMonth = new Date(
     currentDate.getFullYear(),
@@ -21,44 +20,37 @@ const TimeRemaining = ({ title }: ITimeRemainingProps) => {
     1
   );
 
+  useEffect(() => {
+    setSecondsBetweenDates(
+      Math.abs(currentDate.getTime() - dateNextMonth.getTime()) / 1000
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setSecondsBetweenDates((t) => t - 1);
+    }, 1000);
+    return () => clearInterval(intervalId);
+  }, [secondsBetweenDates]);
+
   const formattedTimes = (number: number) =>
     number.toLocaleString('en-US', {
       minimumIntegerDigits: 2,
     });
 
-  const timeLeft = () => {
-    var delta = secondsBetweenDates;
-
-    const days = Math.floor(delta / 86400);
-    delta -= days * 86400;
-
-    const hours = Math.floor(delta / 3600) % 24;
-    delta -= hours * 3600;
-
-    const minutes = Math.floor(delta / 60) % 60;
-    delta -= minutes * 60;
-
-    const seconds = Math.floor(delta % 60);
-
-    return {
-      days: formattedTimes(days),
-      hours: formattedTimes(hours),
-      minutes: formattedTimes(minutes),
-      seconds: formattedTimes(seconds),
-    };
-  };
-
-  useEffect(() => {
-    const newSecondsBetweenDates = Math.abs(
-      (currentDate.getTime() - dateNextMonth.getTime()) / 1000
-    );
-
-    const timer = setTimeout(() => {
-      setSecondsBetweenDates(newSecondsBetweenDates);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [secondsBetweenDates, currentDate, dateNextMonth]);
+  let delta = secondsBetweenDates;
+  // calculate (and subtract) whole days
+  var days = Math.floor(delta / 86400);
+  delta -= days * 86400;
+  // calculate (and subtract) whole hours
+  var hours = Math.floor(delta / 3600) % 24;
+  delta -= hours * 3600;
+  // calculate (and subtract) whole minutes
+  var minutes = Math.floor(delta / 60) % 60;
+  delta -= minutes * 60;
+  // what's left is seconds
+  var seconds = Math.floor(delta % 60); // in theory the modulus is not required
 
   return (
     <StyledContainer>
@@ -67,10 +59,10 @@ const TimeRemaining = ({ title }: ITimeRemainingProps) => {
           <StyledTitle>{title}</StyledTitle>
           {secondsBetweenDates > 0 && (
             <StyledTime>
-              <span>{timeLeft().days} days</span>
-              <span>{timeLeft().hours} hours</span>
-              <span>{timeLeft().minutes} minutes</span>
-              <span>{timeLeft().seconds} seconds</span>
+              <span>{formattedTimes(days)} days</span>
+              <span>{formattedTimes(hours)} hours</span>
+              <span>{formattedTimes(minutes)} minutes</span>
+              <span>{formattedTimes(seconds)} seconds</span>
             </StyledTime>
           )}
         </StyledWrapper>

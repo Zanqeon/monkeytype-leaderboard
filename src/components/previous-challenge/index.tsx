@@ -52,8 +52,18 @@ const PreviousChallenge = ({
     getColorArray(COLOR.quaternary),
   ];
 
+  function generateRandom(username: string) {
+    let sum = 0;
+    for (let i = 0; i < username.length; i++) {
+      sum += username.charCodeAt(i);
+    }
+    let result = sum % COLOR_GRADIENT_MAP.length;
+    return result;
+  }
+
+  // Generates a random colorscheme, based on the name of the user, will always return the same color scheme for the same name
   const randomColorScheme =
-    COLOR_GRADIENT_MAP[Math.floor(Math.random() * COLOR_GRADIENT_MAP.length)];
+    COLOR_GRADIENT_MAP[generateRandom(winner.displayName)];
 
   if (!isLoading) {
     return (

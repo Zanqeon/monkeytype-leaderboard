@@ -1,20 +1,35 @@
 import { REGISTERED_USERS } from '@app/content';
-import { createUser } from '@app/pages/api/firebase/create-user';
-import { updateChallengesWithWinner } from '@app/pages/api/firebase/update-challenges-with-winner';
-import { updateChallengesWithGeneratedChallenges } from '@app/pages/api/firebase/update-challenges-with-generated-challenges';
-import { updateUser } from '@app/pages/api/firebase/update-user';
-import { ChallengesData, UserData, Winner } from '@app/types/firebase';
+import {
+  ChallengeType,
+  ChallengesData,
+  UserData,
+  Winner,
+} from '@app/types/firebase';
+import { getMonkeyTypeProfileByUsername } from '../monkey-type/api';
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  serverTimestamp,
+  setDoc,
+  updateDoc,
+} from 'firebase/firestore';
+import { database } from '.';
 
 export const getUsers = async () => {
-  const res = await fetch(`${process.env.BASE_URL}/api/firebase/get-users`);
-  return await res.json();
+  const snapshot = await getDocs(collection(database, 'users'));
+  const data = snapshot.docs.map((doc) => ({
+    ...doc.data(),
+  }));
+  return data as UserData[];
 };
 
 export const getChallenges = async () => {
-  const res = await fetch(
-    `${process.env.BASE_URL}/api/firebase/get-challenges`
-  );
-  return await res.json();
+  const docRef = doc(database, 'challenges', 'default');
+  const docSnap = await getDoc(docRef);
+  const data = docSnap.data();
+  return data as ChallengesData;
 };
 
 export const checkUsersToCreateOrUpdate = async (userData: UserData[]) => {
@@ -33,8 +48,65 @@ export const checkUsersToCreateOrUpdate = async (userData: UserData[]) => {
   if (usersToCreate.length) {
     console.log('Trying to create new users');
 
-    usersToCreate.forEach(async (user) => {
-      await createUser(user);
+    usersToCreate.forEach(async (username) => {
+      const currentDate = new Date();
+      const currentYear = currentDate.getUTCFullYear();
+      const currentMonth = currentDate.getUTCMonth() + 1;
+      const currentTimeStamp = currentDate.valueOf();
+
+      const { data: monkeyTypeProfile } =
+        await getMonkeyTypeProfileByUsername(username);
+
+      console.log(monkeyTypeProfile, monkeyTypeProfile);
+
+      if (!monkeyTypeProfile.uid) {
+        console.log(
+          `Couldn't create user ${username}. No MonkeyType profile found with this username.`
+        );
+        return;
+      }
+
+      const displayName = REGISTERED_USERS.find(
+        (user) => user.username === username
+      )?.displayName;
+
+      const userRef = doc(database, 'users', monkeyTypeProfile.name);
+      await setDoc(
+        userRef,
+        {
+          username: monkeyTypeProfile.name,
+          displayName: displayName || monkeyTypeProfile.name,
+          uid: monkeyTypeProfile.uid,
+          createdAt: serverTimestamp(),
+          lastUpdated: currentTimeStamp,
+          ...(monkeyTypeProfile.discordId &&
+            monkeyTypeProfile.discordAvatar && {
+              discordId: monkeyTypeProfile.discordId,
+              discordAvatar: monkeyTypeProfile.discordAvatar,
+              image: `https://cdn.discordapp.com/avatars/${monkeyTypeProfile.discordId}/${monkeyTypeProfile.discordAvatar}.jpg`,
+            }),
+          records: {
+            [currentYear]: {
+              [currentMonth]: {
+                time: {
+                  15: {},
+                  30: {},
+                  60: {},
+                  120: {},
+                },
+                words: {
+                  10: {},
+                  25: {},
+                  50: {},
+                  100: {},
+                },
+              },
+            },
+          },
+        },
+        { merge: true }
+      );
+      console.log('Successfully created user:', username);
     });
   }
 
@@ -48,8 +120,69 @@ export const checkUsersToCreateOrUpdate = async (userData: UserData[]) => {
 
   if (usersToUpdate.length) {
     console.log('Trying to update users');
-    usersToUpdate.forEach(async (user) => {
-      await updateUser(user, userData);
+    usersToUpdate.forEach(async (username) => {
+      const currentDate = new Date();
+      const currentYear = currentDate.getUTCFullYear();
+      const currentMonth = currentDate.getUTCMonth() + 1;
+      const currentTimeStamp = currentDate.valueOf();
+      const currentUserData = userData.find(
+        (user) => user.username === username
+      ) as UserData;
+
+      // Get user content from REGISTERED_USERS
+      const userContent = REGISTERED_USERS.find(
+        (user) => user.username === username
+      );
+      const displayName = userContent?.displayName || userContent?.username;
+      // const apiKey = userContent?.apiKey;
+      const showDiscordImage = userContent?.showDiscordImage || false;
+
+      //TODO: Fetch user results from monkeyType here
+      const startFetchFromTimeStamp = new Date(
+        Date.UTC(currentYear, currentDate.getUTCMonth(), 1)
+      );
+
+      console.log('startFetchFromTimeStamp', startFetchFromTimeStamp);
+
+      function getRandomInt(min: number, max: number) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+      const type = 'time';
+      const length = 30;
+
+      const currentMonthRecord = {
+        // TODO: Get results from monkeyType based on timestamp, filter best result of month
+        wpm: getRandomInt(70, 120),
+        accuracy: getRandomInt(60, 100),
+        timestamp: getRandomInt(1698800400000, 1701392400),
+      };
+
+      // TODO: Check against best result on the store
+      // If WPM from the fetched info is better than the one in firestore, do updateDoc
+      const userRef = doc(database, 'users', username);
+      await updateDoc(userRef, {
+        ...currentUserData,
+        username: currentUserData.username,
+        displayName: displayName,
+        showDiscordImage: showDiscordImage,
+        lastUpdated: currentTimeStamp,
+        records: {
+          ...currentUserData.records,
+          [currentYear]: {
+            ...currentUserData.records[currentYear],
+            [currentMonth]: {
+              ...currentUserData.records[currentYear][currentMonth],
+              [type]: {
+                ...currentUserData.records[currentYear][currentMonth][type],
+                [length]: currentMonthRecord,
+              },
+            },
+          },
+        },
+      });
+      console.log('Successfully updated user:', username);
     });
   }
 };
@@ -70,7 +203,59 @@ export const checkChallengesToCreateOrUpdate = async (
 
   // If there are no challenges yet for this year, generate them and push them to firebase
   if (!currentYearChallenges) {
-    await updateChallengesWithGeneratedChallenges();
+    console.log('Generating new challenges for this year');
+
+    const typeOptions = ['words', 'time'];
+    const possibleOptionsForWords = [10, 25, 50, 100];
+    const possibleOptionsForTime = [15, 30, 60, 120];
+
+    const currentDate = new Date();
+    const currentYear = currentDate.getUTCFullYear();
+
+    const generateChallenge = () => {
+      const getLengthOptionsByType = (type: ChallengeType) => {
+        if (type === 'words') return possibleOptionsForWords;
+        if (type === 'time') return possibleOptionsForTime;
+        else return [];
+      };
+
+      // We randomly generate type 'time' or 'words'
+      const generatedType = typeOptions[
+        Math.floor(Math.random() * typeOptions.length)
+      ] as ChallengeType;
+
+      // We randomly generate a length based on the options corresponding to the type we generated
+      const lengthOptions = getLengthOptionsByType(generatedType);
+      const generatedLength =
+        lengthOptions[Math.floor(Math.random() * lengthOptions.length)];
+
+      return {
+        type: generatedType,
+        length: generatedLength,
+      };
+    };
+
+    const listOfChallenges = {
+      [currentYear]: {
+        1: generateChallenge(),
+        2: generateChallenge(),
+        3: generateChallenge(),
+        4: generateChallenge(),
+        5: generateChallenge(),
+        6: generateChallenge(),
+        7: generateChallenge(),
+        8: generateChallenge(),
+        9: generateChallenge(),
+        10: generateChallenge(),
+        11: generateChallenge(),
+        12: generateChallenge(),
+      },
+    };
+
+    const currentYearChallengeRef = doc(database, 'challenges', 'default');
+    await setDoc(currentYearChallengeRef, listOfChallenges, { merge: true });
+
+    console.log(`Successfully added new challenges for ${currentYear}`);
   }
 
   if (currentYearChallenges) {
@@ -137,7 +322,32 @@ export const checkChallengesToCreateOrUpdate = async (
             return highestRecord;
           }
         );
-        await updateChallengesWithWinner(challenges, previousWinner);
+        console.log('Adding winner for challenge previous month');
+
+        const currentDate = new Date();
+        const currentYear = currentDate.getUTCFullYear();
+        const currentMonth = currentDate.getUTCMonth() + 1;
+        const previousChallengeYear =
+          currentMonth === 1 ? currentYear - 1 : currentYear;
+        const previousChallengeMonth =
+          currentMonth === 1 ? 12 : currentMonth - 1;
+
+        const databaseChallengesRef = doc(database, 'challenges', 'default');
+        await updateDoc(databaseChallengesRef, {
+          ...challenges,
+          [previousChallengeYear.toString()]: {
+            ...challenges[previousChallengeYear.toString()],
+            [previousChallengeMonth.toString()]: {
+              ...challenges[previousChallengeYear.toString()][
+                previousChallengeMonth.toString()
+              ],
+              winner: previousWinner,
+            },
+          },
+        });
+        console.log(
+          `Successfully added ${previousWinner.displayName} as winner of ${previousChallengeMonth}-${previousChallengeYear}`
+        );
       }
     }
   }
