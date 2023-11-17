@@ -1,7 +1,7 @@
-import QRCodeImage from 'public/qr-monkeytype.svg';
+// import QRCodeImage from 'public/qr-monkeytype.svg';
 import { IPreviousChallengeProps } from './components/previous-challenge';
 import { IListProps } from './components/list';
-// import QRCodeImageAccount from 'public/qr-monkeytype-account.svg';
+import QRCodeImageAccount from 'public/qr-monkeytype-account.svg';
 
 export const REGISTERED_USERS = [
   {
@@ -48,7 +48,7 @@ export default {
   QRCode: {
     linkLabel: 'monkeytype.com',
     linkHref: 'https://www.monkeytype.com',
-    image: QRCodeImage,
+    image: QRCodeImageAccount,
   },
   monkeyTypeDate: {
     items: [

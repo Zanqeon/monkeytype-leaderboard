@@ -29,22 +29,45 @@ function shadeColor(color: string, decimal: number): string {
   return `#${rr}${gg}${bb}`;
 }
 
-export function getColorArray(color: string) {
+export function generateIndexForArrayBasedOnSeed(seed: string, array: any[]) {
+  let sum = 0;
+  for (let i = 0; i < seed.length; i++) {
+    sum += seed.charCodeAt(i);
+  }
+  let result = sum % array.length;
+  return result;
+}
+
+export function generateColorScheme(color: string, accentColorSeed: string) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const { COLOR } = useTheme();
-  const COLORSCHEME = [
+  const ACCENT_COLORS = [
     COLOR.primary,
     COLOR.secondary,
     COLOR.tertiary,
     COLOR.quaternary,
   ].filter((item) => item.toLowerCase() !== color.toLowerCase());
-  const randomColorFromScheme =
-    COLORSCHEME[Math.floor(Math.random() * COLORSCHEME.length)];
 
-  return [
-    color,
-    randomColorFromScheme,
-    shadeColor(color, 1.2),
-    shadeColor(color, 0.8),
-  ];
+  const accentColor =
+    ACCENT_COLORS[
+      generateIndexForArrayBasedOnSeed(accentColorSeed, ACCENT_COLORS)
+    ];
+
+  //Return an array with the input color + a shade lighter & darker + another main theme color that is different than the input
+  return [color, accentColor, shadeColor(color, 1.2), shadeColor(color, 0.8)];
 }
+
+export const useGenerateColorSchemeArrayForUsername = (username: string) => {
+  const { COLOR } = useTheme();
+
+  const COLOR_GRADIENT_MAP = [
+    generateColorScheme(COLOR.primary, username),
+    generateColorScheme(COLOR.secondary, username),
+    generateColorScheme(COLOR.tertiary, username),
+    generateColorScheme(COLOR.quaternary, username),
+  ];
+
+  return COLOR_GRADIENT_MAP[
+    generateIndexForArrayBasedOnSeed(username, COLOR_GRADIENT_MAP)
+  ];
+};

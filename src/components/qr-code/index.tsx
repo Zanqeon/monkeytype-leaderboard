@@ -18,7 +18,15 @@ const QRCode = ({ linkHref, linkLabel, image }: IQRCodeProps) => (
     <StyledContentWrapper>
       <StyledWrapper>
         <StyledImageWrapper>
-          <Image src={image} alt="QR Code" height={180} width={180} priority />
+          <Image
+            src={image}
+            alt={linkLabel}
+            height={180}
+            width={180}
+            priority
+            sizes="(min-width: 0px) 180px"
+            title="QR code for joining the leaderboard"
+          />
         </StyledImageWrapper>
         <StyledLink href={linkHref}>{linkLabel}</StyledLink>
       </StyledWrapper>

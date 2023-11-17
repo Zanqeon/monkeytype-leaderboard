@@ -21,14 +21,11 @@ export const StyledContainer = styled(Container)(
   `
 );
 
-export const StyledImageWrapper = styled.div(
-  ({ theme: { SPACING } }) => css`
-    position: relative;
-    width: 18rem;
-    height: 18rem;
-    margin-bottom: ${SPACING['04']};
-  `
-);
+export const StyledImageWrapper = styled.div`
+  position: relative;
+  width: 18rem;
+  height: 18rem;
+`;
 
 export const StyledContentWrapper = styled.div`
   text-align: center;
@@ -45,25 +42,34 @@ export const StyledContentWrapper = styled.div`
 `;
 
 export const StyledLink = styled(Link)(
-  ({ theme: { TYPOGRAPHY } }) => css`
+  ({ theme: { TYPOGRAPHY, SPACING } }) => css`
     ${TYPOGRAPHY.BODY_REGULAR}
+    display: flex;
+    justify-content: center;
+    margin-top: ${SPACING['04']};
 
     ${media(
       'MD',
       css`
-        display: flex;
-        justify-content: flex-end;
+        display: none;
       `
     )}
   `
 );
 
 export const StyledWrapper = styled.li(
-  ({ theme: { SPACING } }) => css`
+  ({ theme: { LAYOUT } }) => css`
     ${media(
       'MD',
       css`
-        margin-right: ${SPACING['07']};
+        margin-right: ${`${LAYOUT.LAYOUT_GRID_OFFSET.MD}px`};
+      `
+    )};
+
+    ${media(
+      'LG',
+      css`
+        margin-right: ${`${LAYOUT.LAYOUT_GRID_OFFSET.LG}px`};
       `
     )};
   `
