@@ -8,15 +8,13 @@ import router from 'next/router';
 import { mapChallenges } from '@app/utils/mappers/map-challenges';
 import { mapCurrentChallengeLeaderboard } from '@app/utils/mappers/map-current-challenge-leaderboard';
 import { ChallengesData, UserData } from '@app/types/firebase';
-import {
-  checkChallengesToCreateOrUpdate,
-  checkUsersToCreateOrUpdate,
-  getChallenges,
-  getUsers,
-} from '@app/services/firebase/api';
 import PageLoadingIndicator, {
   LOADING_MESSAGES,
 } from '@app/components/page-loading-indicator';
+import { getChallenges } from '@app/services/firebase/api/get-challenges';
+import { getUsers } from '@app/services/firebase/api/get-users';
+import { checkUsersToCreateOrUpdate } from '@app/services/helpers/check-users';
+import { checkChallengesToCreateOrUpdate } from '@app/services/helpers/check-challenges';
 
 export default function Home({
   currentChallengeLeaderboard,
