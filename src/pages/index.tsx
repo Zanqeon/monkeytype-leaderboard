@@ -45,8 +45,6 @@ export default function Home({
     return () => clearInterval(id);
   }, [isLoading]);
 
-  // return <PageLoadingIndicator />;
-
   return isLoading ? (
     <PageLoadingIndicator />
   ) : (
@@ -67,31 +65,29 @@ export default function Home({
 export const getServerSideProps = async () => {
   const challenges: ChallengesData = await getChallenges();
   const users: UserData[] = await getUsers();
-  await checkUsersToCreateOrUpdate(users);
+
+  const currentYear = new Date().getUTCFullYear();
+  const challengesOfThisYear = challenges?.[currentYear];
+
+  await checkUsersToCreateOrUpdate(challenges, users);
   await checkChallengesToCreateOrUpdate(challenges, users);
 
-  if (Object.keys(users).length && Object.keys(challenges).length) {
-    const { currentChallengeLeaderboard } = mapCurrentChallengeLeaderboard(
-      users,
-      challenges
-    );
-    const { previousChallenge, currentChallenge, nextChallenge } =
-      mapChallenges(challenges);
+  const usersAndChallengesOfThisYearExist =
+    Object.keys(users).length && challengesOfThisYear;
+  const mappedChallenges = mapChallenges(challenges);
 
-    return {
-      props: {
-        previousChallenge,
-        currentChallenge,
-        nextChallenge,
-        currentChallengeLeaderboard,
-        challenges,
-        isLoading: false,
-      },
-    };
-  }
+  const currentChallengeLeaderboard = mapCurrentChallengeLeaderboard(
+    users,
+    challenges
+  );
+
   return {
     props: {
-      isLoading: true,
+      previousChallenge: mappedChallenges.previousChallenge,
+      currentChallenge: mappedChallenges.currentChallenge,
+      nextChallenge: mappedChallenges.nextChallenge,
+      currentChallengeLeaderboard,
+      isLoading: !usersAndChallengesOfThisYearExist,
     },
   };
 };

@@ -32,7 +32,10 @@ export const getChallenges = async () => {
   return data as ChallengesData;
 };
 
-export const checkUsersToCreateOrUpdate = async (userData: UserData[]) => {
+export const checkUsersToCreateOrUpdate = async (
+  challenges: ChallengesData,
+  userData: UserData[]
+) => {
   const currentDate = new Date();
   const timestampOneHourAgo = currentDate.valueOf() - 3600000;
 
@@ -46,18 +49,11 @@ export const checkUsersToCreateOrUpdate = async (userData: UserData[]) => {
   );
 
   if (usersToCreate.length) {
-    console.log('Trying to create new users');
-
     usersToCreate.forEach(async (username) => {
-      const currentDate = new Date();
-      const currentYear = currentDate.getUTCFullYear();
-      const currentMonth = currentDate.getUTCMonth() + 1;
       const currentTimeStamp = currentDate.valueOf();
 
       const { data: monkeyTypeProfile } =
         await getMonkeyTypeProfileByUsername(username);
-
-      console.log(monkeyTypeProfile, monkeyTypeProfile);
 
       if (!monkeyTypeProfile.uid) {
         console.log(
@@ -85,24 +81,6 @@ export const checkUsersToCreateOrUpdate = async (userData: UserData[]) => {
               discordAvatar: monkeyTypeProfile.discordAvatar,
               image: `https://cdn.discordapp.com/avatars/${monkeyTypeProfile.discordId}/${monkeyTypeProfile.discordAvatar}.jpg`,
             }),
-          records: {
-            [currentYear]: {
-              [currentMonth]: {
-                time: {
-                  15: {},
-                  30: {},
-                  60: {},
-                  120: {},
-                },
-                words: {
-                  10: {},
-                  25: {},
-                  50: {},
-                  100: {},
-                },
-              },
-            },
-          },
         },
         { merge: true }
       );
@@ -119,9 +97,7 @@ export const checkUsersToCreateOrUpdate = async (userData: UserData[]) => {
   );
 
   if (usersToUpdate.length) {
-    console.log('Trying to update users');
     usersToUpdate.forEach(async (username) => {
-      const currentDate = new Date();
       const currentYear = currentDate.getUTCFullYear();
       const currentMonth = currentDate.getUTCMonth() + 1;
       const currentTimeStamp = currentDate.valueOf();
@@ -161,26 +137,28 @@ export const checkUsersToCreateOrUpdate = async (userData: UserData[]) => {
 
       // TODO: Check against best result on the store
       // If WPM from the fetched info is better than the one in firestore, do updateDoc
+      const currentUserScore = userData.find(
+        (user) => user.username
+      ) as UserData;
+
+      const currentChallenge =
+        challenges[currentYear.toString()][currentMonth.toString()];
+
+      const userScoreForCurrentChallenge =
+        currentUserScore?.records?.[currentYear.toString()]?.[
+          currentMonth.toString()
+        ]?.[currentChallenge.type]?.[currentChallenge.length];
+
       const userRef = doc(database, 'users', username);
       await updateDoc(userRef, {
-        ...currentUserData,
         username: currentUserData.username,
         displayName: displayName,
-        showDiscordImage: showDiscordImage,
         lastUpdated: currentTimeStamp,
-        records: {
-          ...currentUserData.records,
-          [currentYear]: {
-            ...currentUserData.records[currentYear],
-            [currentMonth]: {
-              ...currentUserData.records[currentYear][currentMonth],
-              [type]: {
-                ...currentUserData.records[currentYear][currentMonth][type],
-                [length]: currentMonthRecord,
-              },
-            },
-          },
-        },
+        showDiscordImage: showDiscordImage,
+        ...(userScoreForCurrentChallenge && {
+          [`records.${currentYear}.${currentMonth}.${type}.${length}`]:
+            currentMonthRecord,
+        }),
       });
       console.log('Successfully updated user:', username);
     });
@@ -203,13 +181,10 @@ export const checkChallengesToCreateOrUpdate = async (
 
   // If there are no challenges yet for this year, generate them and push them to firebase
   if (!currentYearChallenges) {
-    console.log('Generating new challenges for this year');
-
     const typeOptions = ['words', 'time'];
     const possibleOptionsForWords = [10, 25, 50, 100];
     const possibleOptionsForTime = [15, 30, 60, 120];
 
-    const currentDate = new Date();
     const currentYear = currentDate.getUTCFullYear();
 
     const generateChallenge = () => {
@@ -322,9 +297,6 @@ export const checkChallengesToCreateOrUpdate = async (
             return highestRecord;
           }
         );
-        console.log('Adding winner for challenge previous month');
-
-        const currentDate = new Date();
         const currentYear = currentDate.getUTCFullYear();
         const currentMonth = currentDate.getUTCMonth() + 1;
         const previousChallengeYear =
