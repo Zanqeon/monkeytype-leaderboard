@@ -1,12 +1,9 @@
 import { REGISTERED_USERS } from '@app/content';
-import { ChallengesData, UserData } from '@app/types/firebase';
+import { UserData } from '@app/types/firebase';
 import { updateUser } from '@app/services/firebase/api/update-user';
 import { createUser } from '@app/services/firebase/api/create-user';
 
-export const checkUsersToCreateOrUpdate = async (
-  challenges: ChallengesData,
-  userData: UserData[]
-) => {
+export const checkUsersToCreateOrUpdate = async (userData: UserData[]) => {
   const currentDate = new Date();
   const timestampOneHourAgo = currentDate.valueOf() - 3600000;
 
@@ -37,7 +34,7 @@ export const checkUsersToCreateOrUpdate = async (
 
   if (usersToUpdate.length) {
     usersToUpdate.forEach(async (username) => {
-      await updateUser(userData, challenges, username);
+      await updateUser(userData, username);
     });
   }
 };

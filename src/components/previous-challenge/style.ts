@@ -48,6 +48,7 @@ export const StyledCard = styled.div`
     'MD',
     css`
       display: inline-block;
+      min-width: 35rem;
     `
   )};
 `;
@@ -95,6 +96,7 @@ export const StyledContentContainer = styled.div(
       css`
         flex-direction: row;
         align-items: flex-end;
+        justify-content: space-between;
       `
     )};
   `

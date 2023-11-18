@@ -2,6 +2,7 @@
 import { IPreviousChallengeProps } from './components/previous-challenge';
 import { IListProps } from './components/list';
 import QRCodeImageAccount from 'public/qr-monkeytype-account.svg';
+import DefaultWinnerImage from 'public/default-winner.jpg';
 
 export const REGISTERED_USERS = [
   {
@@ -18,18 +19,73 @@ export const REGISTERED_USERS = [
 ];
 
 export const DEFAULT_WINNER: IPreviousChallengeProps['winner'] = {
-  displayName: 'John Doe',
-  wordsPerMinute: 999,
-  accuracy: 100,
-  showDiscordImage: false,
+  displayName: 'Zanqeon',
+  wordsPerMinute: 110,
+  accuracy: 98,
+  showDiscordImage: true,
+  image: DefaultWinnerImage.src,
 };
 
 export const DEFAULT_LEADERBOARD: IListProps['items'] = [
   {
-    displayName: 'John Doe',
-    wordsPerMinute: 100,
-    accuracy: 90,
+    displayName: 'Tim Huijg',
+    wordsPerMinute: 117,
+    accuracy: 91,
+    timestamp: Date.now() + 200000000,
+  },
+  {
+    displayName: 'ユンジュ コン',
+    wordsPerMinute: 117,
+    accuracy: 88,
     timestamp: Date.now(),
+  },
+  {
+    displayName: "Kiri Mana'ia",
+    wordsPerMinute: 108,
+    accuracy: 89,
+    timestamp: Date.now() + 100000000,
+  },
+  {
+    displayName: 'Torbjörn Holmgren',
+    wordsPerMinute: 96,
+    accuracy: 94,
+    timestamp: Date.now() - 200000000,
+  },
+  {
+    displayName: 'José Henríquez',
+    wordsPerMinute: 93,
+    accuracy: 90,
+    timestamp: Date.now() + 100000000,
+  },
+  {
+    displayName: 'Matthias Weber',
+    wordsPerMinute: 87,
+    accuracy: 83,
+    timestamp: Date.now(),
+  },
+  {
+    displayName: 'হুদা আমিন',
+    wordsPerMinute: 83,
+    accuracy: 100,
+    timestamp: Date.now(),
+  },
+  {
+    displayName: 'Þuríður Magnúsdóttir',
+    wordsPerMinute: 78,
+    accuracy: 96,
+    timestamp: Date.now() - 100000000,
+  },
+  {
+    displayName: '신영 전',
+    wordsPerMinute: 78,
+    accuracy: 90,
+    timestamp: Date.now() + 100000000,
+  },
+  {
+    displayName: 'Daniel Jackson',
+    wordsPerMinute: 72,
+    accuracy: 64,
+    timestamp: Date.now() + 200000000,
   },
 ];
 
