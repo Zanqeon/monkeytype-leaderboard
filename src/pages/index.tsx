@@ -23,8 +23,7 @@ export default function Home({
   nextChallenge,
   isLoading,
 }: HomepageProps) {
-  const REFRESH_TIME_IN_MS = 10000;
-
+  const REFRESH_TIME_IN_MS = 900000;
   // Force a router replace in order to serve the new data
   useEffect(() => {
     if (isLoading) {
@@ -33,6 +32,7 @@ export default function Home({
           router.replace(router.asPath);
           //
         },
+        // Wait with the refresh until the PageLoadingIndicator has finished all the animations.
         LOADING_MESSAGES.length * 1.5 * 1000 + 500 + 1000
       );
     }
@@ -53,7 +53,11 @@ export default function Home({
       />
       <List
         {...content.monkeyTypeDate}
-        items={currentChallengeLeaderboard || DEFAULT_LEADERBOARD}
+        items={
+          currentChallengeLeaderboard.length
+            ? currentChallengeLeaderboard
+            : DEFAULT_LEADERBOARD
+        }
       />
       <BottomSection previousChallenge={previousChallenge} />
     </>
@@ -67,7 +71,7 @@ export const getServerSideProps = async () => {
   const currentYear = new Date().getUTCFullYear();
   const challengesOfThisYear = challenges?.[currentYear];
 
-  await checkUsersToCreateOrUpdate(challenges, users);
+  await checkUsersToCreateOrUpdate(users);
   await checkChallengesToCreateOrUpdate(challenges, users);
 
   const usersAndChallengesOfThisYearExist =

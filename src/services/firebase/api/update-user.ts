@@ -1,14 +1,14 @@
-import { REGISTERED_USERS, mockResults } from '@app/content';
-import { ChallengesData, UserData } from '@app/types/firebase';
+import {
+  REGISTERED_USERS,
+  // mockResults
+} from '@app/content';
+import { UserData } from '@app/types/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
 import { database } from '@app/services/firebase';
-import { getCurrentRecord } from '@app/services/helpers/get-current-record';
+import { getCurrentMonthRecords } from '@app/services/helpers/get-current-month-records';
+import { getResults } from '@app/services/monkey-type/get-results';
 
-export const updateUser = async (
-  userData: UserData[],
-  challenges: ChallengesData,
-  username: string
-) => {
+export const updateUser = async (userData: UserData[], username: string) => {
   const currentDate = new Date();
   const currentYear = currentDate.getUTCFullYear();
   const currentMonth = currentDate.getUTCMonth() + 1;
@@ -24,31 +24,13 @@ export const updateUser = async (
   const displayName = userContent?.displayName || userContent?.username;
   const showDiscordImage = userContent?.showDiscordImage || false;
 
-  //   const monkeyTypeResultsForCurrentMonth = await getResults(username);
-  const monkeyTypeResultsForCurrentMonth = mockResults.data;
+  const monkeyTypeResultsForCurrentMonth = await getResults(username);
+  // const monkeyTypeResultsForCurrentMonth = mockResults.data;
 
-  if (!monkeyTypeResultsForCurrentMonth.length) {
-    console.log(`Couldn't retrieve the results of this month for ${username}.`);
-    return;
-  }
-
-  const currentUserScore = userData.find((user) => user.username) as UserData;
-
-  const currentChallenge =
-    challenges[currentYear.toString()][currentMonth.toString()];
-
-  const userScoreForCurrentChallenge =
-    currentUserScore?.records?.[currentYear.toString()]?.[
-      currentMonth.toString()
-    ]?.[currentChallenge.type]?.[currentChallenge.length];
-
-  const { bestRecordOfThisMonth } = getCurrentRecord({
+  const { currentMonthRecords } = getCurrentMonthRecords({
     monkeyResults: monkeyTypeResultsForCurrentMonth,
-    currentRecord: userScoreForCurrentChallenge,
-    currentChallenge: currentChallenge,
+    userData: currentUserData,
   });
-
-  console.log('bestRecordOfThisMonth', bestRecordOfThisMonth);
 
   const userRef = doc(database, 'users', username);
   await updateDoc(userRef, {
@@ -56,10 +38,10 @@ export const updateUser = async (
     displayName: displayName,
     lastUpdated: currentTimeStamp,
     showDiscordImage: showDiscordImage,
-    ...(bestRecordOfThisMonth && {
-      [`records.${currentYear}.${currentMonth}.${currentChallenge.type}.${currentChallenge.length}`]:
-        bestRecordOfThisMonth,
+    ...(currentMonthRecords && {
+      [`records.${currentYear}.${currentMonth}`]: currentMonthRecords,
     }),
   });
-  console.log('Successfully updated user:', username);
+
+  console.log(`Successfully updated user ${username}`);
 };
