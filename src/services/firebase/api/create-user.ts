@@ -1,13 +1,13 @@
 import { REGISTERED_USERS } from '@app/content';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { database } from '@app/services/firebase';
-import { getProfile } from '@app/services/monkey-type/get-profile';
+import { getMonkeyTypeProfile } from '@app/services/monkey-type/get-profile';
 
 export const createUser = async (username: string) => {
   const currentDate = new Date();
   const currentTimeStamp = currentDate.valueOf();
 
-  const { data: monkeyTypeProfile } = await getProfile(username);
+  const { data: monkeyTypeProfile } = await getMonkeyTypeProfile(username);
 
   if (!monkeyTypeProfile.uid) {
     console.log(

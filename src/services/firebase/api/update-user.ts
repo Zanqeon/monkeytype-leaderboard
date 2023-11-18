@@ -6,7 +6,7 @@ import { UserData } from '@app/types/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
 import { database } from '@app/services/firebase';
 import { getCurrentMonthRecords } from '@app/services/helpers/get-current-month-records';
-import { getResults } from '@app/services/monkey-type/get-results';
+import { getMonkeyTypeResults } from '@app/services/monkey-type/get-results';
 
 export const updateUser = async (userData: UserData[], username: string) => {
   const currentDate = new Date();
@@ -24,7 +24,7 @@ export const updateUser = async (userData: UserData[], username: string) => {
   const displayName = userContent?.displayName || userContent?.username;
   const showDiscordImage = userContent?.showDiscordImage || false;
 
-  const monkeyTypeResultsForCurrentMonth = await getResults(username);
+  const monkeyTypeResultsForCurrentMonth = await getMonkeyTypeResults(username);
   // const monkeyTypeResultsForCurrentMonth = mockResults.data;
 
   const { currentMonthRecords } = getCurrentMonthRecords({
