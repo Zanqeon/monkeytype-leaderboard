@@ -6,7 +6,7 @@ import { UserData } from '@app/types/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
 import { database } from '@app/services/firebase';
 import { getCurrentMonthRecords } from '@app/services/helpers/get-current-month-records';
-import { getMonkeyTypeResults } from '@app/services/monkey-type/get-results';
+import { getMonkeyTypeResults } from '@app/services/monkey-type/api/get-results';
 
 export const updateUser = async (userData: UserData[], username: string) => {
   const currentDate = new Date();
