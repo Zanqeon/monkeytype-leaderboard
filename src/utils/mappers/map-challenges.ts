@@ -18,7 +18,7 @@ export function mapChallenges(challenges: ChallengesData) {
     });
 
   const currentMonth = currentDate.getUTCMonth() + 1;
-  const previousMonthAsDate = currentDate.setMonth(currentDate.getMonth() - 1);
+  const previousMonthAsDate = new Date().setMonth(currentDate.getMonth() - 1);
 
   const previousRecordYear = currentMonth === 1 ? currentYear - 1 : currentYear;
   const previousRecordMonth = currentMonth === 1 ? 12 : currentMonth - 1;
