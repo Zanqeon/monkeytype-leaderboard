@@ -7,13 +7,6 @@ export const StyledContainer = styled(Container)(
     display: flex;
     justify-content: space-between;
     margin-top: ${SPACING['06']};
-
-    ${media(
-      'MD',
-      css`
-        margin-top: ${SPACING['06']};
-      `
-    )}
   `
 );
 
