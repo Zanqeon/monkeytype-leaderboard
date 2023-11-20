@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import {
-  StyledContainer,
   StyledWrapper,
   StyledTitle,
   StyledTime,
@@ -53,21 +52,19 @@ const TimeRemaining = ({ title }: ITimeRemainingProps) => {
   var seconds = Math.floor(delta % 60); // in theory the modulus is not required
 
   return (
-    <StyledContainer>
-      <StyledContentWrapper>
-        <StyledWrapper>
-          <StyledTitle>{title}</StyledTitle>
-          {secondsBetweenDates > 0 && (
-            <StyledTime>
-              <span>{formattedTimes(days)} days</span>
-              <span>{formattedTimes(hours)} hours</span>
-              <span>{formattedTimes(minutes)} minutes</span>
-              <span>{formattedTimes(seconds)} seconds</span>
-            </StyledTime>
-          )}
-        </StyledWrapper>
-      </StyledContentWrapper>
-    </StyledContainer>
+    <StyledContentWrapper>
+      <StyledWrapper>
+        <StyledTitle>{title}</StyledTitle>
+        {secondsBetweenDates > 0 && (
+          <StyledTime>
+            <span>{formattedTimes(days)} days</span>
+            <span>{formattedTimes(hours)} hours</span>
+            <span>{formattedTimes(minutes)} minutes</span>
+            <span>{formattedTimes(seconds)} seconds</span>
+          </StyledTime>
+        )}
+      </StyledWrapper>
+    </StyledContentWrapper>
   );
 };
 

@@ -15,6 +15,19 @@ import { getChallenges } from '@app/services/firebase/api/get-challenges';
 import { getUsers } from '@app/services/firebase/api/get-users';
 import { checkUsersToCreateOrUpdate } from '@app/services/helpers/check-users';
 import { checkChallengesToCreateOrUpdate } from '@app/services/helpers/check-challenges';
+import styled from 'styled-components';
+
+const PageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  position: relative;
+  background: black;
+  top: 0;
+  @supports (-webkit-touch-callout: none) {
+    min-height: -webkit-fill-available;
+  }
+`;
 
 export default function Home({
   currentChallengeLeaderboard,
@@ -46,7 +59,7 @@ export default function Home({
   return isLoading ? (
     <PageLoadingIndicator />
   ) : (
-    <>
+    <PageContainer>
       <PageHeader
         currentChallenge={currentChallenge}
         nextChallenge={nextChallenge}
@@ -60,7 +73,7 @@ export default function Home({
         isPlaceholder={!currentChallengeLeaderboard.length}
       />
       <BottomSection previousChallenge={previousChallenge} />
-    </>
+    </PageContainer>
   );
 }
 

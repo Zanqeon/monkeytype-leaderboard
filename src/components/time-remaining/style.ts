@@ -1,49 +1,30 @@
 import styled, { css } from 'styled-components';
 import media from '@app/utils/media';
-import { Container } from '@totemblock/layout';
 
-export const StyledContainer = styled(Container)(
+export const StyledContentWrapper = styled.div(
   ({ theme: { SPACING } }) => css`
     position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    text-align: center;
     margin-top: ${SPACING['06']};
 
     ${media(
       'MD',
       css`
+        text-align: start;
         margin-top: 0;
-        margin-bottom: 0;
       `
     )}
   `
 );
 
-export const StyledContentWrapper = styled.div`
-  position: relative;
-  text-align: center;
-  width: 100%;
-
-  ${media(
-    'MD',
-    css`
-      text-align: start;
-    `
-  )}
-`;
-
 export const StyledWrapper = styled.div`
-  height: 12rem;
-
   ${media(
     'MD',
     css`
       margin: 0;
       position: absolute;
       left: 0;
-      bottom: 0;
-      height: 14.2rem;
+      bottom: 1.2rem;
     `
   )}
 `;

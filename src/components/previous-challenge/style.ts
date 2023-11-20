@@ -30,8 +30,10 @@ export const StyledDescription = styled.div(
   `
 );
 
-export const StyledWrapper = styled.li(
+export const StyledWrapper = styled.div(
   ({ theme: { SPACING } }) => css`
+    margin-top: ${SPACING['03']};
+
     ${media(
       'MD',
       css`
