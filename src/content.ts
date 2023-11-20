@@ -12,8 +12,8 @@ export const REGISTERED_USERS = [
     apiKey: process.env.API_KEY_1,
   },
   {
-    username: 'goldrider10',
-    displayName: 'Tim 2',
+    username: 'radijs',
+    displayName: 'Robbert',
     apiKey: process.env.API_KEY_2,
   },
 ];
