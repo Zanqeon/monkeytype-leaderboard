@@ -10,6 +10,7 @@ export const StyledList = styled.ul(
     flex-wrap: wrap;
     gap: ${SPACING['02']};
     position: relative;
+    animation: fade-in 0.4s ease-in forwards;
 
     ${media(
       'MD',

@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components';
 export const StyledWrapper = styled.li`
   display: flex;
   width: 100%;
+  animation: fade-in 0.4s ease-in forwards;
 
   ${media(
     'MD',
