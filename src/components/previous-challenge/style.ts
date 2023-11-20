@@ -5,6 +5,7 @@ export const StyledTitle = styled.div(
   ({ theme: { TYPOGRAPHY, SPACING } }) => css`
     ${TYPOGRAPHY.HEADING_2}
 
+    animation: fade-in 0.4s ease-in forwards;
     display: flex;
     justify-content: center;
     text-align: center;
@@ -27,12 +28,14 @@ export const StyledDescription = styled.div(
     display: flex;
     justify-content: center;
     text-align: center;
+    animation: fade-in 0.4s ease-in forwards;
   `
 );
 
 export const StyledWrapper = styled.div(
   ({ theme: { SPACING } }) => css`
     margin-top: ${SPACING['03']};
+    animation: fade-in 0.4s ease-in forwards;
 
     ${media(
       'MD',

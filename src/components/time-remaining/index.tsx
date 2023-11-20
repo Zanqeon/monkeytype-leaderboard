@@ -54,14 +54,16 @@ const TimeRemaining = ({ title }: ITimeRemainingProps) => {
   return (
     <StyledContentWrapper>
       <StyledWrapper>
-        <StyledTitle>{title}</StyledTitle>
         {secondsBetweenDates > 0 && (
-          <StyledTime>
-            <span>{formattedTimes(days)} days</span>
-            <span>{formattedTimes(hours)} hours</span>
-            <span>{formattedTimes(minutes)} minutes</span>
-            <span>{formattedTimes(seconds)} seconds</span>
-          </StyledTime>
+          <>
+            <StyledTitle>{title}</StyledTitle>
+            <StyledTime>
+              <span>{formattedTimes(days)} days</span>
+              <span>{formattedTimes(hours)} hours</span>
+              <span>{formattedTimes(minutes)} minutes</span>
+              <span>{formattedTimes(seconds)} seconds</span>
+            </StyledTime>
+          </>
         )}
       </StyledWrapper>
     </StyledContentWrapper>

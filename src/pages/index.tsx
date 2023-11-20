@@ -24,6 +24,7 @@ const PageContainer = styled.div`
   position: relative;
   background: black;
   top: 0;
+
   @supports (-webkit-touch-callout: none) {
     min-height: -webkit-fill-available;
   }
@@ -36,7 +37,8 @@ export default function Home({
   nextChallenge,
   isLoading,
 }: HomepageProps) {
-  const REFRESH_TIME_IN_MS = 900000;
+  const REFRESH_TIME_IN_MS = process.env.NEXT_PUBLIC_REFRESH_TIME_IN_MS;
+
   // Force a router replace in order to serve the new data
   useEffect(() => {
     if (isLoading) {
@@ -51,10 +53,10 @@ export default function Home({
     }
     const id = setInterval(
       () => router.replace(router.asPath),
-      REFRESH_TIME_IN_MS
+      Number(REFRESH_TIME_IN_MS)
     );
     return () => clearInterval(id);
-  }, [isLoading]);
+  }, [isLoading, REFRESH_TIME_IN_MS]);
 
   return isLoading ? (
     <PageLoadingIndicator />
@@ -80,6 +82,8 @@ export default function Home({
 export const getServerSideProps = async () => {
   const challenges: ChallengesData = await getChallenges();
   const users: UserData[] = await getUsers();
+  console.log('resfresh');
+  console.log('----');
 
   const currentYear = new Date().getUTCFullYear();
   const challengesOfThisYear = challenges?.[currentYear];

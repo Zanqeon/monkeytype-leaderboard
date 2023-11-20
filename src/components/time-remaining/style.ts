@@ -32,6 +32,7 @@ export const StyledWrapper = styled.div`
 export const StyledTitle = styled.div(
   ({ theme: { TYPOGRAPHY } }) => css`
     ${TYPOGRAPHY.HEADING_2}
+    animation: fade-in 0.4s ease-in forwards;
   `
 );
 

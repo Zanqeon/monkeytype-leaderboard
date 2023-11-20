@@ -11,6 +11,7 @@ export const StyledImageWrapper = styled.div`
 
 export const StyledContentWrapper = styled.div`
   position: relative;
+  animation: fade-in 0.4s ease-in forwards;
 `;
 
 export const StyledLink = styled(Link)(
