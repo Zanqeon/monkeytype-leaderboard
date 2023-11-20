@@ -50,7 +50,7 @@ export const StyledHeading = styled.div(
 
 export const StyledBody = styled.ol(
   ({ theme: { TYPOGRAPHY, SPACING, COLOR } }) => css`
-    ${TYPOGRAPHY.HEADING_3}
+    ${TYPOGRAPHY.LABEL}
     list-style: decimal-leading-zero;
     list-style-position: inside;
     padding: ${SPACING['04']};
@@ -60,9 +60,8 @@ export const StyledBody = styled.ol(
 );
 
 export const StyledListItem = styled.li(
-  ({ theme: { COLOR, TYPOGRAPHY } }) => css`
-    ${TYPOGRAPHY.BODY_REGULAR}
-    color: ${COLOR.white};
+  ({ theme: { COLOR, SPACING } }) => css`
+    color: ${COLOR.gray};
 
     ${media(
       'MD',
@@ -70,5 +69,9 @@ export const StyledListItem = styled.li(
         white-space: nowrap;
       `
     )};
+
+    & + & {
+      margin-top: ${SPACING['01']};
+    }
   `
 );
