@@ -19,7 +19,7 @@ const QRCode = ({ linkHref, linkLabel, image }: IQRCodeProps) => {
     <StyledContentWrapper>
       <StyledWrapper>
         <StyledInfoMessage />
-        <StyledImageLink href={linkHref}>
+        <StyledImageLink href={linkHref} target="_blank">
           <StyledImageWrapper>
             <Image
               src={image}
@@ -31,7 +31,9 @@ const QRCode = ({ linkHref, linkLabel, image }: IQRCodeProps) => {
             />
           </StyledImageWrapper>{' '}
         </StyledImageLink>
-        <StyledLink href={linkHref}>{linkLabel}</StyledLink>
+        <StyledLink href={linkHref} target="_blank">
+          {linkLabel}
+        </StyledLink>
       </StyledWrapper>
     </StyledContentWrapper>
   );

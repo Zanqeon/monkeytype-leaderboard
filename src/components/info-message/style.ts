@@ -10,9 +10,10 @@ export const StyledContainer = styled.div(
     width: 100%;
     position: relative;
     margin-bottom: ${SPACING['05']};
+    z-index: 1;
 
     opacity: 0;
-    animation: fade-in 0.4s;
+    animation: fade-in ease-in-out 0.4s;
     animation-fill-mode: forwards;
 
     ${media(
