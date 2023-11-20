@@ -1,26 +1,7 @@
 import styled, { css } from 'styled-components';
 import media from '@app/utils/media';
-import { Container } from '@totemblock/layout';
 import Link from 'next/link';
 import InfoMessage from '@app/components/info-message';
-
-export const StyledContainer = styled(Container)(
-  ({ theme: { SPACING } }) => css`
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: ${SPACING['06']};
-    margin-bottom: ${SPACING['05']};
-
-    ${media(
-      'MD',
-      css`
-        margin: 0;
-      `
-    )}
-  `
-);
 
 export const StyledImageWrapper = styled.div`
   position: relative;
@@ -29,18 +10,7 @@ export const StyledImageWrapper = styled.div`
 `;
 
 export const StyledContentWrapper = styled.div`
-  width: 100%;
-
-  ${media(
-    'MD',
-    css`
-      width: auto;
-      margin: 0;
-      position: absolute;
-      right: 0;
-      bottom: 0;
-    `
-  )}
+  position: relative;
 `;
 
 export const StyledLink = styled(Link)(
@@ -59,33 +29,30 @@ export const StyledLink = styled(Link)(
   `
 );
 
-export const StyledWrapper = styled.li(
-  ({ theme: { LAYOUT } }) => css`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+export const StyledInfoMessage = styled(InfoMessage)``;
 
-    ${media(
-      'MD',
-      css`
-        margin-right: ${`${LAYOUT.LAYOUT_GRID_OFFSET.MD}px`};
-      `
-    )};
+export const StyledWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  margin-top: 4rem;
 
-    ${media(
-      'LG',
-      css`
-        margin-right: ${`${LAYOUT.LAYOUT_GRID_OFFSET.LG}px`};
-      `
-    )};
+  ${media(
+    'MD',
+    css`
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      margin-top: 0;
+    `
+  )};
 
-    &:hover {
-      ${StyledInfoMessage} {
-        display: block;
-      }
+  &:hover {
+    ${StyledInfoMessage} {
+      display: block;
     }
-  `
-);
+  }
+`;
 
 export const StyledImageLink = styled(Link)``;
-export const StyledInfoMessage = styled(InfoMessage)``;

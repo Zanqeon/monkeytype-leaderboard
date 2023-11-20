@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import { Container } from '@totemblock/layout';
 import Avatar from 'boring-avatars';
 import { useGenerateColorSchemeArrayForUsername } from '@app/utils/get-color-array';
 import {
@@ -44,7 +43,7 @@ const PreviousChallenge = ({
   );
 
   return (
-    <Container>
+    <>
       <StyledTitle>{title}</StyledTitle>
       <StyledDescription>{description}</StyledDescription>
       <StyledWrapper>
@@ -85,7 +84,7 @@ const PreviousChallenge = ({
           </StyledContentContainer>
         </StyledCard>
       </StyledWrapper>
-    </Container>
+    </>
   );
 };
 

@@ -2,7 +2,7 @@ import media from '@app/utils/media';
 import styled, { css } from 'styled-components';
 
 export const StyledContainer = styled.div(
-  ({ theme: { COLOR, LAYOUT, TYPOGRAPHY, SPACING, RADIUS } }) => css`
+  ({ theme: { COLOR, TYPOGRAPHY, SPACING, RADIUS } }) => css`
     ${TYPOGRAPHY.HEADING_3}
     border: 0.2rem ${COLOR.white} solid;
     border-radius: ${RADIUS['02']};
@@ -10,9 +10,10 @@ export const StyledContainer = styled.div(
     width: 100%;
     position: relative;
     margin-bottom: ${SPACING['05']};
+    z-index: 1;
 
     opacity: 0;
-    animation: fade-in 0.4s;
+    animation: fade-in ease-in-out 0.4s;
     animation-fill-mode: forwards;
 
     ${media(
@@ -22,17 +23,10 @@ export const StyledContainer = styled.div(
         display: none;
         position: absolute;
         bottom: calc(100% + 1.6rem);
-        right: ${`${LAYOUT.LAYOUT_GRID_OFFSET.MD}px`};
+        right: 0;
         max-width: none;
         margin-bottom: 0;
         border-bottom-right-radius: 0;
-      `
-    )};
-
-    ${media(
-      'LG',
-      css`
-        right: ${`${LAYOUT.LAYOUT_GRID_OFFSET.LG}px`};
       `
     )};
   `
