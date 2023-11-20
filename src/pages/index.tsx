@@ -1,5 +1,5 @@
 import PageHeader from '@app/components/page-header';
-import content, { DEFAULT_LEADERBOARD } from '@app/content';
+import { DEFAULT_LEADERBOARD } from '@app/content';
 import List from '@app/components/list';
 import BottomSection from '@app/components/bottom-section';
 import { useEffect } from 'react';
@@ -13,7 +13,7 @@ import PageLoadingIndicator, {
 } from '@app/components/page-loading-indicator';
 import { getChallenges } from '@app/services/firebase/api/get-challenges';
 import { getUsers } from '@app/services/firebase/api/get-users';
-// import { checkUsersToCreateOrUpdate } from '@app/services/helpers/check-users';
+import { checkUsersToCreateOrUpdate } from '@app/services/helpers/check-users';
 import { checkChallengesToCreateOrUpdate } from '@app/services/helpers/check-challenges';
 
 export default function Home({
@@ -52,12 +52,12 @@ export default function Home({
         nextChallenge={nextChallenge}
       />
       <List
-        {...content.monkeyTypeDate}
         items={
           currentChallengeLeaderboard.length
             ? currentChallengeLeaderboard
             : DEFAULT_LEADERBOARD
         }
+        isPlaceholder={!currentChallengeLeaderboard.length}
       />
       <BottomSection previousChallenge={previousChallenge} />
     </>
@@ -71,7 +71,7 @@ export const getServerSideProps = async () => {
   const currentYear = new Date().getUTCFullYear();
   const challengesOfThisYear = challenges?.[currentYear];
 
-  // await checkUsersToCreateOrUpdate(users);
+  await checkUsersToCreateOrUpdate(users);
   await checkChallengesToCreateOrUpdate(challenges, users);
 
   const usersAndChallengesOfThisYearExist =

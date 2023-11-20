@@ -16,6 +16,7 @@ const BottomSection = ({ previousChallenge }: any) => (
       winner={previousChallenge.winner || DEFAULT_WINNER}
       title={previousChallenge.title}
       description={previousChallenge.description}
+      isPlaceholder={!previousChallenge.winner}
     />
     <TimeRemaining title="Time remaining" />
     <QRCode {...content.QRCode} />

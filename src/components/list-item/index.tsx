@@ -10,6 +10,7 @@ import {
   StyledWordsPerMinute,
   StyledAccuracy,
   StyledDate,
+  StyledNote,
 } from './style';
 
 export interface IListItemProps {
@@ -18,6 +19,7 @@ export interface IListItemProps {
   wordsPerMinute: number;
   accuracy: number;
   timestamp: number;
+  isPlaceholder?: boolean;
 }
 
 const ListItem = ({
@@ -26,6 +28,7 @@ const ListItem = ({
   accuracy,
   timestamp,
   displayName,
+  isPlaceholder,
 }: IListItemProps) => {
   const { COLOR } = useTheme();
   const PLACE_COLORS = {
@@ -46,6 +49,7 @@ const ListItem = ({
       <StyledContentWrapper
         $hasLabelDesktop={place === 1 || place == 6}
         $hasLabelMobile={place === 1}
+        $showPlaceholderNote={place === 10 && isPlaceholder}
       >
         <StyledNameWrapper>
           <StyledName>{displayName}</StyledName>
@@ -55,6 +59,7 @@ const ListItem = ({
         </StyledWordsPerMinute>
         <StyledAccuracy>{accuracy ? `${accuracy}%` : ''}</StyledAccuracy>
         <StyledDate>{getFormattedRecordDate(timestamp)}</StyledDate>
+        <StyledNote>*Placeholder leaderboard</StyledNote>
       </StyledContentWrapper>
     </StyledWrapper>
   );
