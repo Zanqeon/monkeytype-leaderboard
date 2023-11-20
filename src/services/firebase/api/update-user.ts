@@ -24,7 +24,8 @@ export const updateUser = async (userData: UserData[], username: string) => {
   const displayName = userContent?.displayName || userContent?.username;
   const showDiscordImage = userContent?.showDiscordImage || false;
 
-  const monkeyTypeResultsForCurrentMonth = await getMonkeyTypeResults(username);
+  const { data: monkeyTypeResultsForCurrentMonth } =
+    await getMonkeyTypeResults(username);
   // const monkeyTypeResultsForCurrentMonth = mockResults.data;
 
   const { currentMonthRecords } = getCurrentMonthRecords({

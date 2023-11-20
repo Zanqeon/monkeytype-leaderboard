@@ -63,6 +63,7 @@ export const StyledHeader = styled.div(
     border-top-right-radius: ${RADIUS['02']};
     border: 2px solid ${COLOR.white};
     border-bottom: none;
+    position: relative;
   `
 );
 
@@ -172,3 +173,14 @@ export const StyledEmoji = styled.div`
     `
   )};
 `;
+
+export const StyledNote = styled.div(
+  ({ theme: { TYPOGRAPHY, COLOR } }) => css`
+    ${TYPOGRAPHY.NUMBER_SMALL}
+    position: absolute;
+    color: ${COLOR.black};
+    bottom: -0.8rem;
+    right: 1.6rem;
+    user-select: none;
+  `
+);

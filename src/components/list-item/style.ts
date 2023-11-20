@@ -56,10 +56,12 @@ export const StyledPlace = styled.div(
 export const StyledContentWrapper = styled.div<{
   $hasLabelMobile?: boolean;
   $hasLabelDesktop?: boolean;
+  $showPlaceholderNote?: boolean;
 }>(
   ({
     $hasLabelMobile,
     $hasLabelDesktop,
+    $showPlaceholderNote,
     theme: { COLOR, SPACING, TYPOGRAPHY },
   }) => css`
     border: 0.2rem solid ${COLOR.white};
@@ -70,6 +72,7 @@ export const StyledContentWrapper = styled.div<{
     background-color: ${COLOR.black};
     flex: 1;
     justify-content: space-between;
+    position: relative;
 
     ${media(
       'MD',
@@ -154,6 +157,13 @@ export const StyledContentWrapper = styled.div<{
         &::after {
           display: block;
         }
+      }
+    `}
+    
+    ${$showPlaceholderNote &&
+    css`
+      ${StyledNote} {
+        display: block;
       }
     `}
   `
@@ -250,5 +260,15 @@ export const StyledDate = styled.div(
         width: 8rem;
       `
     )}
+  `
+);
+
+export const StyledNote = styled.div(
+  ({ theme: { TYPOGRAPHY } }) => css`
+    ${TYPOGRAPHY.LABEL}
+    display: none;
+    position: absolute;
+    bottom: -2.4rem;
+    right: 0;
   `
 );

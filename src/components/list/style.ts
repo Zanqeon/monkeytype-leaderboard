@@ -9,6 +9,7 @@ export const StyledList = styled.ul(
     align-content: space-around;
     flex-wrap: wrap;
     gap: ${SPACING['02']};
+    position: relative;
 
     ${media(
       'MD',
