@@ -29,6 +29,7 @@ export const checkUsersToCreateOrUpdate = async (userData: UserData[]) => {
   if (usersToCreate.length) {
     usersToCreate.forEach(async (username) => {
       await createUser(username);
+      await updateUser(userData, username);
     });
   }
 
