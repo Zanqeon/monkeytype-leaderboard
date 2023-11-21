@@ -82,8 +82,6 @@ export default function Home({
 export const getServerSideProps = async () => {
   const challenges: ChallengesData = await getChallenges();
   const users: UserData[] = await getUsers();
-  console.log('resfresh');
-  console.log('----');
 
   const currentYear = new Date().getUTCFullYear();
   const challengesOfThisYear = challenges?.[currentYear];
