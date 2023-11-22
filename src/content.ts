@@ -16,6 +16,16 @@ export const REGISTERED_USERS = [
     displayName: 'Robbert',
     apiKey: process.env.API_KEY_2,
   },
+  {
+    username: 'ezra-tribe',
+    displayName: 'Ezra',
+    apiKey: process.env.API_KEY_3,
+  },
+  {
+    username: 'alexajeune',
+    displayName: 'Alexa',
+    apiKey: process.env.API_KEY_4,
+  },
 ];
 
 export const DEFAULT_WINNER: IPreviousChallengeProps['winner'] = {
