@@ -1,5 +1,5 @@
 import { ChallengeType } from '@app/types/firebase';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, updateDoc } from 'firebase/firestore';
 import { database } from '@app/services/firebase';
 
 export const updateChallengesWithGeneratedChallenges = async () => {
@@ -48,10 +48,24 @@ export const updateChallengesWithGeneratedChallenges = async () => {
       11: generateChallenge(),
       12: generateChallenge(),
     },
+    [currentYear + 1]: {
+      1: generateChallenge(),
+      2: generateChallenge(),
+      3: generateChallenge(),
+      4: generateChallenge(),
+      5: generateChallenge(),
+      6: generateChallenge(),
+      7: generateChallenge(),
+      8: generateChallenge(),
+      9: generateChallenge(),
+      10: generateChallenge(),
+      11: generateChallenge(),
+      12: generateChallenge(),
+    },
   };
 
   const currentYearChallengeRef = doc(database, 'challenges', 'default');
-  await setDoc(currentYearChallengeRef, listOfChallenges, { merge: true });
+  await updateDoc(currentYearChallengeRef, listOfChallenges);
 
   console.log(`Successfully added new challenges for ${currentYear}`);
 };

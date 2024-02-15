@@ -15,9 +15,10 @@ export const checkChallengesToCreateOrUpdate = async (
   const previousChallengeMonth = currentMonth === 1 ? 12 : currentMonth - 1;
 
   const currentYearChallenges = challenges[currentYear.toString()];
+  const nextYearChallenges = challenges[(currentYear + 1).toString()];
 
   // If there are no challenges yet for this year, generate them and push them to firebase
-  if (!currentYearChallenges) {
+  if (!currentYearChallenges || !nextYearChallenges) {
     await updateChallengesWithGeneratedChallenges();
   }
 
